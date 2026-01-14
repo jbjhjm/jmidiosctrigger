@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+	Axe CC Commands
+
+	SCENE SELECT 	34
+	SCENE INCR 		123
+	SCENE DECR 		124
+	TEMPO TAP 		14
+	TUNER 			15
+	EXTERNAL 1 		16
+	EXTERNAL 2 		17
+	EXTERNAL 3 		18
+	EXTERNAL 4 		19
+
+	Presets PC Commands
+	There is no Preset increase/decrease.
+	To select a preset within current bank, send PC 0-127.
+	To switch banks, send a CC0 before with values 0-3.
+-->
+
+<jmididata>
+  
+  <events>
+
+    <event id="tuner_on">	<midi type="cc" channel="3" key="015" value="127" /></event>
+    <event id="tuner_off">	<midi type="cc" channel="3" key="015" value="000" /></event>
+    <event id="taptempo">	<midi type="cc" channel="3" key="014" value="000" /></event>
+    <event id="lforeset">	<midi type="cc" channel="3" key="014" value="000" /></event>
+    <event id="ctrl1">		<midi type="cc" channel="3" key="016" value="127" /></event>
+    <event id="ctrl2">		<midi type="cc" channel="3" key="017" value="127" /></event>
+
+    <event id="scene1">		<midi type="cc" channel="3" key="034" value="000" /></event>
+    <event id="scene2">		<midi type="cc" channel="3" key="034" value="001" /></event>
+    <event id="scene3">		<midi type="cc" channel="3" key="034" value="002" /></event>
+    <event id="scene4">		<midi type="cc" channel="3" key="034" value="003" /></event>
+    <event id="scene5">		<midi type="cc" channel="3" key="034" value="004" /></event>
+    <event id="scene6">		<midi type="cc" channel="3" key="034" value="005" /></event>
+    <event id="scene7">		<midi type="cc" channel="3" key="034" value="006" /></event>
+    <event id="scene8">		<midi type="cc" channel="3" key="034" value="007" /></event>
+
+    <event id="preset000">	<midi type="pc" channel="3" key="000" value="127" /></event>
+    <event id="preset001">	<midi type="pc" channel="3" key="001" value="127" /></event>
+    <event id="preset002">	<midi type="pc" channel="3" key="002" value="127" /></event>
+    <event id="preset003">	<midi type="pc" channel="3" key="003" value="127" /></event>
+    <event id="preset004">	<midi type="pc" channel="3" key="004" value="127" /></event>
+    <event id="preset005">	<midi type="pc" channel="3" key="005" value="127" /></event>
+    <event id="preset006">	<midi type="pc" channel="3" key="006" value="127" /></event>
+    <event id="preset007">	<midi type="pc" channel="3" key="007" value="127" /></event>
+    <event id="preset008">	<midi type="pc" channel="3" key="008" value="127" /></event>
+    <event id="preset009">	<midi type="pc" channel="3" key="009" value="127" /></event>
+
+    <event id="preset010">	<midi type="pc" channel="3" key="010" value="127" /></event>
+    <event id="preset011">	<midi type="pc" channel="3" key="011" value="127" /></event>
+    <event id="preset012">	<midi type="pc" channel="3" key="012" value="127" /></event>
+    <event id="preset013">	<midi type="pc" channel="3" key="013" value="127" /></event>
+    <event id="preset014">	<midi type="pc" channel="3" key="014" value="127" /></event>
+    <event id="preset015">	<midi type="pc" channel="3" key="015" value="127" /></event>
+    <event id="preset016">	<midi type="pc" channel="3" key="016" value="127" /></event>
+    <event id="preset017">	<midi type="pc" channel="3" key="017" value="127" /></event>
+    <event id="preset018">	<midi type="pc" channel="3" key="018" value="127" /></event>
+    <event id="preset019">	<midi type="pc" channel="3" key="019" value="127" /></event>
+
+    <event id="preset010">	<midi type="pc" channel="3" key="010" value="127" /></event>
+    <event id="preset011">	<midi type="pc" channel="3" key="011" value="127" /></event>
+    <event id="preset012">	<midi type="pc" channel="3" key="012" value="127" /></event>
+    <event id="preset013">	<midi type="pc" channel="3" key="013" value="127" /></event>
+    <event id="preset014">	<midi type="pc" channel="3" key="014" value="127" /></event>
+    <event id="preset015">	<midi type="pc" channel="3" key="015" value="127" /></event>
+    <event id="preset016">	<midi type="pc" channel="3" key="016" value="127" /></event>
+    <event id="preset017">	<midi type="pc" channel="3" key="017" value="127" /></event>
+    <event id="preset018">	<midi type="pc" channel="3" key="018" value="127" /></event>
+    <event id="preset019">	<midi type="pc" channel="3" key="019" value="127" /></event>
+
+    <event id="preset020">	<midi type="pc" channel="3" key="020" value="127" /></event>
+    <event id="preset021">	<midi type="pc" channel="3" key="021" value="127" /></event>
+    <event id="preset022">	<midi type="pc" channel="3" key="022" value="127" /></event>
+    <event id="preset023">	<midi type="pc" channel="3" key="023" value="127" /></event>
+    <event id="preset024">	<midi type="pc" channel="3" key="024" value="127" /></event>
+    <event id="preset025">	<midi type="pc" channel="3" key="025" value="127" /></event>
+    <event id="preset026">	<midi type="pc" channel="3" key="026" value="127" /></event>
+    <event id="preset027">	<midi type="pc" channel="3" key="027" value="127" /></event>
+    <event id="preset028">	<midi type="pc" channel="3" key="028" value="127" /></event>
+    <event id="preset029">	<midi type="pc" channel="3" key="029" value="127" /></event>
+
+    <event id="preset030">	<midi type="pc" channel="3" key="030" value="127" /></event>
+    <event id="preset031">	<midi type="pc" channel="3" key="031" value="127" /></event>
+    <event id="preset032">	<midi type="pc" channel="3" key="032" value="127" /></event>
+    <event id="preset033">	<midi type="pc" channel="3" key="033" value="127" /></event>
+    <event id="preset034">	<midi type="pc" channel="3" key="034" value="127" /></event>
+    <event id="preset035">	<midi type="pc" channel="3" key="035" value="127" /></event>
+    <event id="preset036">	<midi type="pc" channel="3" key="036" value="127" /></event>
+    <event id="preset037">	<midi type="pc" channel="3" key="037" value="127" /></event>
+    <event id="preset038">	<midi type="pc" channel="3" key="038" value="127" /></event>
+    <event id="preset039">	<midi type="pc" channel="3" key="039" value="127" /></event>
+
+    <event id="preset040">	<midi type="pc" channel="3" key="040" value="127" /></event>
+    <event id="preset041">	<midi type="pc" channel="3" key="041" value="127" /></event>
+    <event id="preset042">	<midi type="pc" channel="3" key="042" value="127" /></event>
+    <event id="preset043">	<midi type="pc" channel="3" key="043" value="127" /></event>
+    <event id="preset044">	<midi type="pc" channel="3" key="044" value="127" /></event>
+    <event id="preset045">	<midi type="pc" channel="3" key="045" value="127" /></event>
+    <event id="preset046">	<midi type="pc" channel="3" key="046" value="127" /></event>
+    <event id="preset047">	<midi type="pc" channel="3" key="047" value="127" /></event>
+    <event id="preset048">	<midi type="pc" channel="3" key="048" value="127" /></event>
+    <event id="preset049">	<midi type="pc" channel="3" key="049" value="127" /></event>
+
+    <event id="preset050">	<midi type="pc" channel="3" key="050" value="127" /></event>
+    <event id="preset051">	<midi type="pc" channel="3" key="051" value="127" /></event>
+    <event id="preset052">	<midi type="pc" channel="3" key="052" value="127" /></event>
+    <event id="preset053">	<midi type="pc" channel="3" key="053" value="127" /></event>
+    <event id="preset054">	<midi type="pc" channel="3" key="054" value="127" /></event>
+    <event id="preset055">	<midi type="pc" channel="3" key="055" value="127" /></event>
+    <event id="preset056">	<midi type="pc" channel="3" key="056" value="127" /></event>
+    <event id="preset057">	<midi type="pc" channel="3" key="057" value="127" /></event>
+    <event id="preset058">	<midi type="pc" channel="3" key="058" value="127" /></event>
+    <event id="preset059">	<midi type="pc" channel="3" key="059" value="127" /></event>
+
+  </events>
+
+  <listeners>
+
+	<!-- OCT -2 -->
+    <listener channel="1" type="all" key="000" trigger="tuner_on" />
+    <listener channel="1" type="all" key="001" trigger="tuner_off" />
+    <listener channel="1" type="all" key="002" trigger="ctrl1" />
+    <listener channel="1" type="all" key="003" trigger="ctrl2" />
+    <listener channel="1" type="all" key="009" trigger="lforeset" />
+    <listener channel="1" type="all" key="010" trigger="taptempo" />
+
+	<!-- OCT -1 -->
+    <listener channel="1" type="all" key="012" trigger="scene1" />
+    <listener channel="1" type="all" key="013" trigger="scene2" />
+    <listener channel="1" type="all" key="014" trigger="scene3" />
+    <listener channel="1" type="all" key="015" trigger="scene4" />
+    <listener channel="1" type="all" key="016" trigger="scene5" />
+    <listener channel="1" type="all" key="017" trigger="scene6" />
+    <listener channel="1" type="all" key="018" trigger="scene7" />
+    <listener channel="1" type="all" key="019" trigger="scene8" />
+
+	<!-- OCT 0 + X -->
+    <listener channel="1" type="all" key="024" trigger="preset000" />
+    <listener channel="1" type="all" key="025" trigger="preset001" />
+    <listener channel="1" type="all" key="026" trigger="preset002" />
+    <listener channel="1" type="all" key="027" trigger="preset003" />
+    <listener channel="1" type="all" key="028" trigger="preset004" />
+    <listener channel="1" type="all" key="029" trigger="preset005" />
+    <listener channel="1" type="all" key="030" trigger="preset006" />
+    <listener channel="1" type="all" key="031" trigger="preset007" />
+    <listener channel="1" type="all" key="032" trigger="preset008" />
+    <listener channel="1" type="all" key="033" trigger="preset009" />
+
+    <listener channel="1" type="all" key="034" trigger="preset010" />
+    <listener channel="1" type="all" key="035" trigger="preset011" />
+    <listener channel="1" type="all" key="036" trigger="preset012" />
+    <listener channel="1" type="all" key="037" trigger="preset013" />
+    <listener channel="1" type="all" key="038" trigger="preset014" />
+    <listener channel="1" type="all" key="039" trigger="preset015" />
+    <listener channel="1" type="all" key="040" trigger="preset016" />
+    <listener channel="1" type="all" key="041" trigger="preset017" />
+    <listener channel="1" type="all" key="042" trigger="preset018" />
+    <listener channel="1" type="all" key="043" trigger="preset019" />
+
+    <listener channel="1" type="all" key="044" trigger="preset020" />
+    <listener channel="1" type="all" key="045" trigger="preset021" />
+    <listener channel="1" type="all" key="046" trigger="preset022" />
+    <listener channel="1" type="all" key="047" trigger="preset023" />
+    <listener channel="1" type="all" key="048" trigger="preset024" />
+    <listener channel="1" type="all" key="049" trigger="preset025" />
+    <listener channel="1" type="all" key="050" trigger="preset026" />
+    <listener channel="1" type="all" key="051" trigger="preset027" />
+    <listener channel="1" type="all" key="052" trigger="preset028" />
+    <listener channel="1" type="all" key="053" trigger="preset029" />
+
+    <listener channel="1" type="all" key="054" trigger="preset030" />
+    <listener channel="1" type="all" key="055" trigger="preset031" />
+    <listener channel="1" type="all" key="056" trigger="preset032" />
+    <listener channel="1" type="all" key="057" trigger="preset033" />
+    <listener channel="1" type="all" key="058" trigger="preset034" />
+    <listener channel="1" type="all" key="059" trigger="preset035" />
+    <listener channel="1" type="all" key="060" trigger="preset036" />
+    <listener channel="1" type="all" key="061" trigger="preset037" />
+    <listener channel="1" type="all" key="062" trigger="preset038" />
+    <listener channel="1" type="all" key="063" trigger="preset039" />
+
+    <listener channel="1" type="all" key="064" trigger="preset040" />
+    <listener channel="1" type="all" key="065" trigger="preset041" />
+    <listener channel="1" type="all" key="066" trigger="preset042" />
+    <listener channel="1" type="all" key="067" trigger="preset043" />
+    <listener channel="1" type="all" key="068" trigger="preset044" />
+    <listener channel="1" type="all" key="069" trigger="preset045" />
+    <listener channel="1" type="all" key="070" trigger="preset046" />
+    <listener channel="1" type="all" key="071" trigger="preset047" />
+    <listener channel="1" type="all" key="072" trigger="preset048" />
+    <listener channel="1" type="all" key="073" trigger="preset049" />
+
+    <listener channel="1" type="all" key="074" trigger="preset050" />
+    <listener channel="1" type="all" key="075" trigger="preset051" />
+    <listener channel="1" type="all" key="076" trigger="preset052" />
+    <listener channel="1" type="all" key="077" trigger="preset053" />
+    <listener channel="1" type="all" key="078" trigger="preset054" />
+    <listener channel="1" type="all" key="079" trigger="preset055" />
+    <listener channel="1" type="all" key="080" trigger="preset056" />
+    <listener channel="1" type="all" key="081" trigger="preset057" />
+    <listener channel="1" type="all" key="082" trigger="preset058" />
+    <listener channel="1" type="all" key="083" trigger="preset059" />
+
+    <listener channel="1" type="all" key="084" trigger="preset060" />
+    <listener channel="1" type="all" key="085" trigger="preset061" />
+    <listener channel="1" type="all" key="086" trigger="preset062" />
+    <listener channel="1" type="all" key="087" trigger="preset063" />
+    <listener channel="1" type="all" key="088" trigger="preset064" />
+    <listener channel="1" type="all" key="089" trigger="preset065" />
+    <listener channel="1" type="all" key="090" trigger="preset066" />
+    <listener channel="1" type="all" key="091" trigger="preset067" />
+    <listener channel="1" type="all" key="092" trigger="preset068" />
+    <listener channel="1" type="all" key="093" trigger="preset069" />
+    
+  </listeners>
+  
+</jmididata>

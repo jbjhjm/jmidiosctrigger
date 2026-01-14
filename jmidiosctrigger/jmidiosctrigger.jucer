@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="W1FDz5" name="jmidiosctrigger" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              companyName="sector" companyWebsite="www.sector.band" pluginFormats="buildStandalone,buildVST3"
+              pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginManufacturerCode="sctr" pluginCode="jmot">
+  <MAINGROUP id="nIXnNl" name="jmidiosctrigger">
+    <GROUP id="{970AD132-6F86-BBE3-C62B-7DF6194751E9}" name="Components">
+      <FILE id="jVjDY6" name="DocComponent.cpp" compile="1" resource="0"
+            file="Components/DocComponent.cpp"/>
+      <FILE id="VufEyO" name="DocComponent.h" compile="0" resource="0" file="Components/DocComponent.h"/>
+      <FILE id="oLxKtI" name="DemoComponent.cpp" compile="1" resource="0"
+            file="Components/DemoComponent.cpp"/>
+      <FILE id="Xx1k5m" name="DemoComponent.h" compile="0" resource="0" file="Components/DemoComponent.h"/>
+      <FILE id="ouLxbn" name="LogComponent.cpp" compile="1" resource="0"
+            file="Components/LogComponent.cpp"/>
+      <FILE id="DXcn1t" name="LogComponent.h" compile="0" resource="0" file="Components/LogComponent.h"/>
+      <FILE id="Jx79cQ" name="AboutComponent.cpp" compile="1" resource="0"
+            file="Components/AboutComponent.cpp"/>
+      <FILE id="hHY3NJ" name="AboutComponent.h" compile="0" resource="0"
+            file="Components/AboutComponent.h"/>
+      <FILE id="y6nFXo" name="MainComponent.cpp" compile="1" resource="0"
+            file="Components/MainComponent.cpp"/>
+      <FILE id="yv7g5G" name="MainComponent.h" compile="0" resource="0" file="Components/MainComponent.h"/>
+    </GROUP>
+    <GROUP id="{92CFACB3-0AA1-3BEC-B5D2-F4CA582A3D8B}" name="Libraries">
+      <FILE id="ZgENFa" name="pugiconfig.hpp" compile="0" resource="0" file="libraries/pugiconfig.hpp"/>
+      <FILE id="VfOT4Z" name="pugixml.cpp" compile="1" resource="0" file="libraries/pugixml.cpp"/>
+      <FILE id="oR3TmD" name="pugixml.hpp" compile="0" resource="0" file="libraries/pugixml.hpp"/>
+    </GROUP>
+    <GROUP id="{EDB187E8-38F1-489B-090F-4DB0504739F2}" name="Source">
+      <FILE id="Ox1flB" name="StatusLog.h" compile="0" resource="0" file="Source/StatusLog.h"/>
+      <FILE id="AJP0sz" name="MidiUtils.h" compile="0" resource="0" file="Source/MidiUtils.h"/>
+      <FILE id="vFJh9W" name="MidiUtils.cpp" compile="1" resource="0" file="Source/MidiUtils.cpp"/>
+      <FILE id="LizByP" name="XMLParser.cpp" compile="1" resource="0" file="Source/XMLParser.cpp"/>
+      <FILE id="Jd3LaF" name="XMLParser.h" compile="0" resource="0" file="Source/XMLParser.h"/>
+      <FILE id="hWKqLv" name="Store.cpp" compile="1" resource="0" file="Source/Store.cpp"/>
+      <FILE id="uMXyZh" name="IDS.cpp" compile="1" resource="0" file="Source/IDS.cpp"/>
+      <FILE id="uAz0gi" name="StatusLog.cpp" compile="1" resource="0" file="Source/StatusLog.cpp"/>
+      <FILE id="Tdw6v9" name="XMLReader.cpp" compile="1" resource="0" file="Source/XMLReader.cpp"/>
+      <FILE id="MUMR2n" name="XMLReader.h" compile="0" resource="0" file="Source/XMLReader.h"/>
+      <FILE id="lOz17f" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="XbpD3E" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="prOtUz" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Ojcaxw" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <CODEBLOCKS_WINDOWS targetFolder="Builds/CodeBlocksWindows">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="NewProject"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="NewProject"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_core" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_events" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_graphics" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../Projucer/modules"/>
+      </MODULEPATHS>
+    </CODEBLOCKS_WINDOWS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="jmidiosctrigger"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="jmidiosctrigger"/>
+        <CONFIGURATION isDebug="1" name="DebugReaper" targetName="jmidiosctrigger" enablePluginBinaryCopyStep="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_core" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_events" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_graphics" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../Projucer/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+</JUCERPROJECT>

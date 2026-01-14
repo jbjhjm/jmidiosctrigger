@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jmididata>
+
+	<variables>
+		<myvar value="11"/>
+		<axeChannel value="7"/>
+	</variables>
+  
+	<events>
+		<event id="ctrl1">		<midi type="cc" channel="3" key="016" value="127" /></event>
+		<event id="ctrl2">		<midi type="cc" channel="3" key="017" value="$myvar" /></event>
+		<event id="preset1">	<midi type="pc" channel="$axeChannel" key="050" value="@value" /></event>
+		<event id="multievent">	
+			<midi type="pc" channel="3" key="052" value="127" />
+			<midi type="cc" channel="3" key="052" value="111" />
+			<midi type="noteon" channel="3" key="052" value="@value" />
+			<midi type="noteon" channel="@channel" key="052" value="@value" />
+		</event>
+	</events>
+
+	<listeners>
+		<listener channel="1" type="all" key="036" trigger="ctrl1" />
+		<listener channel="1" type="noteon" key="037" trigger="ctrl2" />
+		<listener channel="1" type="noteon" key="038" trigger="preset1" />
+		<listener channel="1" type="noteon" key="039" trigger="multievent" />
+		<listener channel="1" type="noteon" key="040" ><midi type="pc" channel="$axeChannel" key="050" value="127" /></listener>
+		<listener channel="1" type="noteoff" key="041" ><midi type="pc" channel="$axeChannel" key="@key" value="50" /></listener>
+		<listener channel="1" type="noteoff" key="042" ><midi type="cc" channel="3" key="018" value="@value" /></listener>
+	</listeners>
+  
+</jmididata>
