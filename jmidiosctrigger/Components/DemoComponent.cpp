@@ -40,6 +40,37 @@ DemoComponent::DemoComponent ()
     DemoField->setScrollbarsShown (true);
     DemoField->setCaretVisible (false);
     DemoField->setPopupMenuEnabled (true);
+    DemoField->setText (TRANS("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<jmididata>\n"
+    "\n"
+    "\t<variables>\n"
+    "\t\t<myvar value=\"11\"/>\n"
+    "\t\t<axeChannel value=\"7\"/>\n"
+    "\t</variables>\n"
+    "  \n"
+    "\t<events>\n"
+    "\t\t<event id=\"ctrl1\">\t\t<midi type=\"cc\" channel=\"3\" key=\"016\" value=\"127\" /></event>\n"
+    "\t\t<event id=\"ctrl2\">\t\t<midi type=\"cc\" channel=\"3\" key=\"017\" value=\"$myvar\" /></event>\n"
+    "\t\t<event id=\"preset1\">\t<midi type=\"pc\" channel=\"$axeChannel\" key=\"050\" value=\"@value\" /></event>\n"
+    "\t\t<event id=\"multievent\">\t\n"
+    "\t\t\t<midi type=\"pc\" channel=\"3\" key=\"052\" value=\"127\" />\n"
+    "\t\t\t<midi type=\"cc\" channel=\"3\" key=\"052\" value=\"111\" />\n"
+    "\t\t\t<midi type=\"noteon\" channel=\"3\" key=\"052\" value=\"@value\" />\n"
+    "\t\t\t<midi type=\"noteon\" channel=\"@channel\" key=\"052\" value=\"@value\" />\n"
+    "\t\t</event>\n"
+    "\t</events>\n"
+    "\n"
+    "\t<listeners>\n"
+    "\t\t<listener channel=\"1\" type=\"all\" key=\"036\" trigger=\"ctrl1\" />\n"
+    "\t\t<listener channel=\"1\" type=\"noteon\" key=\"037\" trigger=\"ctrl2\" />\n"
+    "\t\t<listener channel=\"1\" type=\"noteon\" key=\"038\" trigger=\"preset1\" />\n"
+    "\t\t<listener channel=\"1\" type=\"noteon\" key=\"039\" trigger=\"multievent\" />\n"
+    "\t\t<listener channel=\"1\" type=\"noteon\" key=\"040\" ><midi type=\"pc\" channel=\"$axeChannel\" key=\"050\" value=\"127\" /></listener>\n"
+    "\t\t<listener channel=\"1\" type=\"noteoff\" key=\"041\" ><midi type=\"pc\" channel=\"$axeChannel\" key=\"@key\" value=\"50\" /></listener>\n"
+    "\t\t<listener channel=\"1\" type=\"noteoff\" key=\"042\" ><midi type=\"cc\" channel=\"3\" key=\"018\" value=\"@value\" /></listener>\n"
+    "\t</listeners>\n"
+    "  \n"
+    "</jmididata>"));
 
 
     //[UserPreSize]

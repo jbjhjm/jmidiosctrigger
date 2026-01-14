@@ -21,7 +21,6 @@
 //[/Headers]
 
 #include "AboutComponent.h"
-#include "../Source/Constants.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
@@ -42,6 +41,7 @@ AboutComponent::AboutComponent ()
     juce__textEditor->setCaretVisible (false);
     juce__textEditor->setPopupMenuEnabled (true);
     juce__textEditor->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+    juce__textEditor->setText (TRANS("Custom Plugin Developed by Jannik Mewes for www.sector.band, 2023"));
 
 
     //[UserPreSize]

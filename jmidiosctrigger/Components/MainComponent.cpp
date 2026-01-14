@@ -45,27 +45,16 @@ MainComponent::MainComponent (JMidiOscTriggerAudioProcessor& p)
     selectFileButton->setColour (juce::TextButton::buttonColourId, juce::Colour (0xff869449));
     selectFileButton->setColour (juce::TextButton::buttonOnColourId, juce::Colour (0xffacbf58));
 
-    selectFileButton->setBounds (327, 15, 144, 32);
+    selectFileButton->setBounds (16, 56, 120, 24);
 
     refreshFileButton.reset (new juce::TextButton ("refreshFileButton"));
     addAndMakeVisible (refreshFileButton.get());
-    refreshFileButton->setButtonText (TRANS("reload"));
+    refreshFileButton->setButtonText (TRANS("reload/connect"));
     refreshFileButton->addListener (this);
     refreshFileButton->setColour (juce::TextButton::buttonColourId, juce::Colour (0xff869449));
     refreshFileButton->setColour (juce::TextButton::buttonOnColourId, juce::Colour (0xffacbf58));
 
-    refreshFileButton->setBounds (477, 15, 120, 32);
-
-    filepathLabel.reset (new juce::Label ("filepathLabel",
-                                          TRANS("select a config XML file to get started.")));
-    addAndMakeVisible (filepathLabel.get());
-    filepathLabel->setFont (juce::Font (15.00f, juce::Font::plain).withTypefaceStyle ("Regular"));
-    filepathLabel->setJustificationType (juce::Justification::centredLeft);
-    filepathLabel->setEditable (false, false, false);
-    filepathLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
-    filepathLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
-
-    filepathLabel->setBounds (16, 56, 500, 24);
+    refreshFileButton->setBounds (464, 56, 128, 24);
 
     juce__tabbedComponent.reset (new juce::TabbedComponent (juce::TabbedButtonBar::TabsAtBottom));
     addAndMakeVisible (juce__tabbedComponent.get());
@@ -76,7 +65,56 @@ MainComponent::MainComponent (JMidiOscTriggerAudioProcessor& p)
     juce__tabbedComponent->addTab (TRANS("About"), juce::Colour (0x25030518), new AboutComponent(), true);
     juce__tabbedComponent->setCurrentTabIndex (0);
 
-    juce__tabbedComponent->setBounds (16, 96, 576, 296);
+    juce__tabbedComponent->setBounds (16, 112, 576, 280);
+
+    inputIp.reset (new juce::TextEditor ("input_ip"));
+    addAndMakeVisible (inputIp.get());
+    inputIp->setMultiLine (false);
+    inputIp->setReturnKeyStartsNewLine (false);
+    inputIp->setReadOnly (false);
+    inputIp->setScrollbarsShown (true);
+    inputIp->setCaretVisible (true);
+    inputIp->setPopupMenuEnabled (true);
+    inputIp->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0xff1f2427));
+    inputIp->setText (TRANS("<ip address>"));
+
+    inputIp->setBounds (144, 56, 150, 24);
+
+    inputPort.reset (new juce::TextEditor ("input_port"));
+    addAndMakeVisible (inputPort.get());
+    inputPort->setMultiLine (false);
+    inputPort->setReturnKeyStartsNewLine (false);
+    inputPort->setReadOnly (false);
+    inputPort->setScrollbarsShown (true);
+    inputPort->setCaretVisible (true);
+    inputPort->setPopupMenuEnabled (true);
+    inputPort->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0xff1f2427));
+    inputPort->setText (TRANS("<port>"));
+
+    inputPort->setBounds (304, 56, 150, 24);
+
+    juce__label.reset (new juce::Label ("new label",
+                                        TRANS("JMidiOscTrigger")));
+    addAndMakeVisible (juce__label.get());
+    juce__label->setFont (juce::Font ("Consolas", 27.20f, juce::Font::plain).withTypefaceStyle ("Bold").withExtraKerningFactor (-0.055f));
+    juce__label->setJustificationType (juce::Justification::centredLeft);
+    juce__label->setEditable (false, false, false);
+    juce__label->setColour (juce::Label::backgroundColourId, juce::Colour (0xff829765));
+    juce__label->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    juce__label->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    juce__label->setBounds (16, 16, 296, 32);
+
+    filepathLabel.reset (new juce::Label ("filepathLabel",
+                                          TRANS("no xml configuration file selected")));
+    addAndMakeVisible (filepathLabel.get());
+    filepathLabel->setFont (juce::Font (15.00f, juce::Font::plain).withTypefaceStyle ("Regular"));
+    filepathLabel->setJustificationType (juce::Justification::centredLeft);
+    filepathLabel->setEditable (false, false, false);
+    filepathLabel->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    filepathLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    filepathLabel->setBounds (16, 84, 576, 24);
 
     cachedImage_background_png_1 = juce::ImageCache::getFromMemory (background_png, background_pngSize);
 
@@ -103,8 +141,11 @@ MainComponent::~MainComponent()
 
     selectFileButton = nullptr;
     refreshFileButton = nullptr;
-    filepathLabel = nullptr;
     juce__tabbedComponent = nullptr;
+    inputIp = nullptr;
+    inputPort = nullptr;
+    juce__label = nullptr;
+    filepathLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -168,6 +209,9 @@ void MainComponent::buttonClicked (juce::Button* buttonThatWasClicked)
     //[/UserbuttonClicked_Post]
 }
 
+
+
+//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainComponent::valueTreePropertyChanged(juce::ValueTree& tree, const juce::Identifier& property)
 {
     if (property == CONFIGPROPS::FilePath) {
@@ -186,8 +230,6 @@ void MainComponent::updateFilePathField()
 	}
 }
 
-
-//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainComponent::timerCallback()
 {
 //   //exchange any data you want between UI elements and the Plugin "ourProcessor"
@@ -215,7 +257,7 @@ void MainComponent::showFileDialogue()
                 juce::var relPath = juce::var(FileUtils::getRelativeFilePath(file));
                 logger.log("resolved selected file to maybe-relative path: " + relPath.toString());
                 configState.setProperty(CONFIGPROPS::FilePath, relPath, nullptr);
-				
+
                 (*audioProcessor).loadXmlFile(relPath.toString());
             }
         }
@@ -234,28 +276,23 @@ void MainComponent::showFileDialogue()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MainComponent" componentName=""
-                 parentClasses="public juce::Component" constructorParams="JMidiOscTriggerAudioProcessor&amp; p"
-                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330" fixedSize="0" initialWidth="600" initialHeight="400">
+                 parentClasses="public juce::Component, public juce::ValueTree::Listener"
+                 constructorParams="JMidiOscTriggerAudioProcessor&amp; p" variableInitialisers=""
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44">
     <IMAGE pos="4 4 600 400" resource="background_png" opacity="1.0" mode="0"/>
   </BACKGROUND>
   <TEXTBUTTON name="selectFileButton" id="358ec7dce7e67e20" memberName="selectFileButton"
-              virtualName="" explicitFocusOrder="0" pos="327 15 144 32" bgColOff="ff869449"
+              virtualName="" explicitFocusOrder="0" pos="16 56 120 24" bgColOff="ff869449"
               bgColOn="ffacbf58" buttonText="select config file" connectedEdges="0"
               needsCallback="1" radioGroupId="0"/>
   <TEXTBUTTON name="refreshFileButton" id="2538b41c502fb6ed" memberName="refreshFileButton"
-              virtualName="" explicitFocusOrder="0" pos="477 15 120 32" bgColOff="ff869449"
-              bgColOn="ffacbf58" buttonText="reload" connectedEdges="0" needsCallback="1"
-              radioGroupId="0"/>
-  <LABEL name="filepathLabel" id="2f04c9545be1a9ae" memberName="filepathLabel"
-         virtualName="" explicitFocusOrder="0" pos="16 56 500 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="select a config XML file to get started."
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15.0" kerning="0.0" bold="0"
-         italic="0" justification="33"/>
+              virtualName="" explicitFocusOrder="0" pos="464 56 128 24" bgColOff="ff869449"
+              bgColOn="ffacbf58" buttonText="reload/connect" connectedEdges="0"
+              needsCallback="1" radioGroupId="0"/>
   <TABBEDCOMPONENT name="new tabbed component" id="6c6c7f863f116d7" memberName="juce__tabbedComponent"
-                   virtualName="" explicitFocusOrder="0" pos="16 96 576 296" orientation="bottom"
+                   virtualName="" explicitFocusOrder="0" pos="16 112 576 280" orientation="bottom"
                    tabBarDepth="30" initialTab="0">
     <TAB name="Event Log" colour="25030518" useJucerComp="1" contentClassName=""
          constructorParams="" jucerComponentFile="LogComponent.cpp"/>
@@ -266,6 +303,25 @@ BEGIN_JUCER_METADATA
     <TAB name="About" colour="25030518" useJucerComp="1" contentClassName=""
          constructorParams="" jucerComponentFile="AboutComponent.cpp"/>
   </TABBEDCOMPONENT>
+  <TEXTEDITOR name="input_ip" id="69a2b7cb2cd5e197" memberName="inputIp" virtualName=""
+              explicitFocusOrder="0" pos="144 56 150 24" bkgcol="ff1f2427"
+              initialText="&lt;ip address&gt;" multiline="0" retKeyStartsLine="0"
+              readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
+  <TEXTEDITOR name="input_port" id="a7eca59a43135a0f" memberName="inputPort"
+              virtualName="" explicitFocusOrder="0" pos="304 56 150 24" bkgcol="ff1f2427"
+              initialText="&lt;port&gt;" multiline="0" retKeyStartsLine="0"
+              readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
+  <LABEL name="new label" id="5fe7532ed811574e" memberName="juce__label"
+         virtualName="" explicitFocusOrder="0" pos="16 16 296 32" bkgCol="ff829765"
+         edTextCol="ff000000" edBkgCol="0" labelText="JMidiOscTrigger"
+         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
+         fontname="Consolas" fontsize="27.2" kerning="-0.055" bold="1"
+         italic="0" justification="33" typefaceStyle="Bold"/>
+  <LABEL name="filepathLabel" id="5be5377816c4f9b9" memberName="filepathLabel"
+         virtualName="" explicitFocusOrder="0" pos="16 84 576 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="no xml configuration file selected" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

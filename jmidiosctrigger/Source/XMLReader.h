@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "FileUtils.h"
 #include "StatusLog.h"
 #include "XMLParser.h"
 #include "../libraries/pugixml.hpp" 

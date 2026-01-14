@@ -30,6 +30,12 @@
       <FILE id="oR3TmD" name="pugixml.hpp" compile="0" resource="0" file="libraries/pugixml.hpp"/>
     </GROUP>
     <GROUP id="{EDB187E8-38F1-489B-090F-4DB0504739F2}" name="Source">
+      <FILE id="GGp3lh" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
+      <FILE id="kwC2Oi" name="FileUtils.cpp" compile="1" resource="0" file="Source/FileUtils.cpp"/>
+      <FILE id="rwSHP4" name="FileUtils.h" compile="0" resource="0" file="Source/FileUtils.h"/>
+      <FILE id="OX8tbW" name="Store.h" compile="0" resource="0" file="Source/Store.h"/>
+      <FILE id="DBX4Yp" name="OSCHandler.cpp" compile="1" resource="0" file="Source/OSCHandler.cpp"/>
+      <FILE id="jmYu41" name="OSCHandler.h" compile="0" resource="0" file="Source/OSCHandler.h"/>
       <FILE id="Ox1flB" name="StatusLog.h" compile="0" resource="0" file="Source/StatusLog.h"/>
       <FILE id="AJP0sz" name="MidiUtils.h" compile="0" resource="0" file="Source/MidiUtils.h"/>
       <FILE id="vFJh9W" name="MidiUtils.cpp" compile="1" resource="0" file="Source/MidiUtils.cpp"/>
@@ -69,6 +75,7 @@
         <MODULEPATH id="juce_graphics" path="../Projucer/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../Projucer/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_osc" path="../Projucer/modules"/>
       </MODULEPATHS>
     </CODEBLOCKS_WINDOWS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
@@ -90,6 +97,7 @@
         <MODULEPATH id="juce_graphics" path="../Projucer/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../Projucer/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../Projucer/modules"/>
+        <MODULEPATH id="juce_osc" path="../Projucer/modules"/>
       </MODULEPATHS>
     </VS2022>
   </EXPORTFORMATS>
@@ -107,5 +115,6 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_osc" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
   </MODULES>
 </JUCERPROJECT>

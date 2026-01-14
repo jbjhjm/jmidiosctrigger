@@ -129,19 +129,37 @@ void JMidiOscTriggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    juce::MidiBuffer midiOutput;
     int time;
     juce::MidiMessage m;
     juce::String searchString;
+	bool isMidiMessageInWatchedRange = true; 
+	bool midiMessageHasOscTarget = true; 
+	pugi::xml_node xmlEntry;
 
     for (juce::MidiBuffer::Iterator i(midiMessages); i.getNextEvent(m, time);)
     {
 		//logger.logMidiMessage(m, "processBlock");
-        processMidiInputMessage(m, midiOutput);
+        // processMidiInputMessage(m, midiOutput);
+
+		// efficient pre-check: only allow noteon events in lowest octave
+		isMidiMessageInWatchedRange = m.isNoteOn() && m.getNoteNumber() < 13;
+		if(isMidiMessageInWatchedRange) {
+
+			// TODO: limit processing complexity by pre-scanning and filtering
+			midiMessageHasOscTarget = XMLReader::getInstance().parser->findEntryforMidiEvent(m, xmlEntry);
+
+			if(midiMessageHasOscTarget) {
+				
+				midiMessages.clear(time,0);
+
+				// TODO: Send OSC command
+			}
+		}
     }
 
-    midiMessages.swapWith(midiOutput);
 }
+
+
 
 //==============================================================================
 bool JMidiOscTriggerAudioProcessor::hasEditor() const
@@ -253,31 +271,6 @@ auto JMidiOscTriggerAudioProcessor::getMidiMessageTypeAndKey(const juce::MidiMes
 
 
 
-bool JMidiOscTriggerAudioProcessor::processMidiInputMessage(const juce::MidiMessage& message, juce::MidiBuffer& midiOutput)
-{
-	//<listener channel = "2" type = "cc" key = "11" >
-	//const MidiMessage m = MidiMessage::noteOn(message.getChannel(), message.getNoteNumber(), newVel);
-
-    XMLReader& xmlReader = XMLReader::getInstance();
-    if (!xmlReader.isReady()) {
-        logger.log("Error: No configuration is loaded!",1);
-        return false;
-    }
-
-	auto [type, key, value] = getMidiMessageTypeAndKey(message);
-	int channel = message.getChannel();
-
-	bool foundAnyData = false;
-
-    MidiUtils::MidiMessageInfo inputInfo {
-        type,
-        channel,
-        key,
-        value
-    };
-
-    return xmlReader.parser->handleMidiEvent(inputInfo, midiOutput);
-}
 
 
 

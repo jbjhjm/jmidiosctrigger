@@ -36,8 +36,8 @@
                                                                     //[/Comments]
 */
 class MainComponent  : public juce::Component,
-                       public juce::Button::Listener,
-                       public juce::ValueTree::Listener
+                       public juce::ValueTree::Listener,
+                       public juce::Button::Listener
 {
 public:
     //==============================================================================
@@ -48,13 +48,13 @@ public:
     //[UserMethods]     -- You can add your own custom methods in this section.
     void timerCallback();
     void showFileDialogue();
-    //[/UserMethods]
+    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
+    void updateFilePathField();
+   //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
     void resized() override;
     void buttonClicked (juce::Button* buttonThatWasClicked) override;
-    void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
-    void updateFilePathField();
 
     // Binary resources:
     static const char* background_png;
@@ -70,8 +70,11 @@ private:
     //==============================================================================
     std::unique_ptr<juce::TextButton> selectFileButton;
     std::unique_ptr<juce::TextButton> refreshFileButton;
-    std::unique_ptr<juce::Label> filepathLabel;
     std::unique_ptr<juce::TabbedComponent> juce__tabbedComponent;
+    std::unique_ptr<juce::TextEditor> inputIp;
+    std::unique_ptr<juce::TextEditor> inputPort;
+    std::unique_ptr<juce::Label> juce__label;
+    std::unique_ptr<juce::Label> filepathLabel;
     juce::Image cachedImage_background_png_1;
 
 

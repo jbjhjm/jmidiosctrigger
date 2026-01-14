@@ -69,9 +69,6 @@ public:
     bool loadXmlFile(const juce::File& fi);
     bool reloadFile();
 
-    //void addMidiMessageToList(const juce::MidiMessage& message, const juce::String& source = "");
-    bool processMidiInputMessage(const juce::MidiMessage& message, juce::MidiBuffer& midiOutput);
-
     StatusLog logger;
 
     juce::Value midiDataInfo;

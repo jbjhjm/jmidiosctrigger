@@ -61,23 +61,19 @@ bool XMLParser::loadXmlData(pugi::xml_document* doc)
 	return true;
 }
 
-pugi::xpath_variable_set XMLParser::createListenerQueryParams(int channel, int key, juce::String type) {
-	pugi::xpath_variable_set params;
 
-	params.add("channel", pugi::xpath_value_type::xpath_type_number);
-	params.add("type", pugi::xpath_value_type::xpath_type_string);
-	params.add("key", pugi::xpath_value_type::xpath_type_number);
-
-	params.set("channel", double(channel));
-	params.set("type", type.getCharPointer());
-	params.set("key", double(key));
-
-	return params;
-}
-
-pugi::xml_node XMLParser::findListenerNode(pugi::xpath_variable_set* params)
+pugi::xml_node XMLParser::findListenerNode(int channel, int note)
 {
-	pugi::xpath_query midiListenerQuery("listener[@channel=number($channel)][@key=number($key)][@type=string($type) or @type='all']", params);
+	// TODO: Pre-cache data for real time lookups
+	// std::unordered_set or std::unordered_map are typically the fastest for average-case O(1) lookup when you need to check existence or retrieve values by key.
+	// They use hashing, making them ideal for large datasets with frequent lookups, provided a good hash function is available.
+	pugi::xpath_variable_set vars;
+	vars.add("channel", pugi::xpath_value_type::xpath_type_number);
+	vars.add("note", pugi::xpath_value_type::xpath_type_number);
+	vars.set("channel", double(channel));
+	vars.set("note", double(note));
+	// TODO: instead of querying, a manual loop over children is likely more efficient
+	pugi::xpath_query midiListenerQuery("listener[@channel=number($channel)][@key=number($note)]", &vars);
 	pugi::xpath_node targetNode = midiListenerQuery.evaluate_node(xmlListenersNode);
 	return targetNode.node();
 }
@@ -159,38 +155,13 @@ XmlEventInfo* XMLParser::getEventInfoFromXml(pugi::string_t eventId)
 	}
 }
 
-bool XMLParser::handleMidiEvent(MidiUtils::MidiMessageInfo& inputInfo, juce::MidiBuffer & midiOutput)
+bool XMLParser::findEntryforMidiEvent(juce::MidiMessage& inputInfo, pugi::xml_node& xmlEntry)
 {
-	// [@type=string(type) or @type=all]
-	//pugi::xpath_query midiListenerQuery(listenerQuery);
-
-	pugi::xpath_variable_set params = createListenerQueryParams(inputInfo.channel, inputInfo.key, inputInfo.type);
-	pugi::xml_node listenerNode = findListenerNode(&params);
-	const bool listenerFound = listenerNode && listenerNode.name() != "";
-
-	if (inputInfo.type == "noteon" || listenerFound) {
-		// skip log for noteoff events as these are considered optional
-		logger.log(">>> incoming: " + inputInfo.type 
-			+ " [channel=" + juce::String(inputInfo.channel) +"]"
-			+ " [key=" + juce::String(inputInfo.key)+"]"
-			+ (listenerFound ? " -- MATCH" : " -- UNKNOWN")
-		, 0);
-	}
-
-	if (listenerFound) {
-		if (inputInfo.type == "noteoff" && listenerNode.attribute("type").as_string() == "all") {
-			// special case: skip handling of noteoff midi event for type "all" listeners
-			return true;
-		}
-		const auto nodeName = listenerNode.name();
-		
-		return sendResponseForMidiEvent((listenerNode), inputInfo, midiOutput);
-	}
-	else 
-	{
-		return false;
-	}
+	xmlEntry = findListenerNode(inputInfo.getChannel(), inputInfo.getNoteNumber());
+	const bool listenerFound = xmlEntry && xmlEntry.name() != "";
+	return listenerFound;
 }
+
 
 bool XMLParser::sendResponseForMidiEvent(pugi::xml_node& listenerNode, MidiUtils::MidiMessageInfo& inputInfo, juce::MidiBuffer& midiOutput) {
 	
