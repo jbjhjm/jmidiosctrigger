@@ -213,7 +213,15 @@ void MainComponent::buttonClicked (juce::Button* buttonThatWasClicked)
 void MainComponent::updateIpAndPort() {
 	juce::String port = inputPort->getText();
 	juce::String ip = inputIp->getText();
-	// TODO: update stored port/ip
+
+	auto configState = Store::getState(STATES::Config);
+
+	// if(ip.length > 0) {
+		configState.setProperty(CONFIGPROPS::IP, ip, nullptr);
+	// }
+	// if(port.length > 0) {
+		configState.setProperty(CONFIGPROPS::Port, port, nullptr);
+	// }
 
 }
 
@@ -224,6 +232,10 @@ void MainComponent::valueTreePropertyChanged(juce::ValueTree& tree, const juce::
 {
     if (property == CONFIGPROPS::FilePath) {
         updateFilePathField();
+    } else if (property == CONFIGPROPS::IP) {
+        // TODO: implement
+    } else if (property == CONFIGPROPS::Port) {
+        // TODO: implement
     }
 }
 
@@ -265,7 +277,6 @@ void MainComponent::showFileDialogue()
                 juce::var relPath = juce::var(FileUtils::getRelativeFilePath(file));
                 logger.log("resolved selected file to maybe-relative path: " + relPath.toString());
                 configState.setProperty(CONFIGPROPS::FilePath, relPath, nullptr);
-				updateIpAndPort();
       			(*audioProcessor).refresh();
 
             }

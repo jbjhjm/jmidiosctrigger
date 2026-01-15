@@ -29,6 +29,7 @@ JMidiOscTriggerAudioProcessor::JMidiOscTriggerAudioProcessor()
 
 JMidiOscTriggerAudioProcessor::~JMidiOscTriggerAudioProcessor()
 {
+	OSCHandler::getInstance().disconnect();
 }
 
 //==============================================================================
@@ -136,25 +137,37 @@ void JMidiOscTriggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 	bool midiMessageHasOscTarget = true; 
 	pugi::xml_node xmlEntry;
 
+	// auto numNotes = midiMessages.getNumEvents();
+	// if(numNotes > 0) {
+	// 	logger.log("Handle incoming midi events " + juce::String(numNotes));
+	// }
+
     for (juce::MidiBuffer::Iterator i(midiMessages); i.getNextEvent(m, time);)
     {
 		//logger.logMidiMessage(m, "processBlock");
         // processMidiInputMessage(m, midiOutput);
 
-		// efficient pre-check: only allow noteon events in lowest octave
-		isMidiMessageInWatchedRange = m.isNoteOn() && m.getNoteNumber() < 13;
+		// efficient pre-check: only allow noteon events in certain region
+		if(!m.isNoteOn(true)) continue;
+		isMidiMessageInWatchedRange =  m.getNoteNumber() < 13;
+		
 		if(isMidiMessageInWatchedRange) {
 
 			// TODO: limit processing complexity by pre-scanning and filtering
 			midiMessageHasOscTarget = XMLReader::getInstance().parser->findEntryforMidiEvent(m, xmlEntry);
 
 			if(midiMessageHasOscTarget) {
+				logger.log("Found midiMessage with OSC target [channel=" + juce::String(m.getChannel()) +"]" + " [key=" + juce::String(m.getNoteNumber())+"]");
 				
 				midiMessages.clear(time,0);
 
-				// TODO: Send OSC command
+				OSCHandler::getInstance().sendOSC(xmlEntry, m);
+
+				continue;
 			}
 		}
+		// logger.log("midiMessage has no OSC target [channel=" + juce::String(m.getChannel()) +"]" + " [key=" + juce::String(m.getNoteNumber())+"]");
+
     }
 
 }
@@ -184,6 +197,7 @@ void JMidiOscTriggerAudioProcessor::getStateInformation (juce::MemoryBlock& dest
     //configStateAsXml->writeToFile()
     //logger.log("persisting State Information.");
     copyXmlToBinary(*configStateAsXml, destData);
+	refresh();
 }
 
 void JMidiOscTriggerAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
@@ -210,6 +224,7 @@ void JMidiOscTriggerAudioProcessor::setStateInformation(const void* data, int si
 
 bool JMidiOscTriggerAudioProcessor::readXmlFileAccordingToState()
 {
+    auto& configState = Store::getState(STATES::Config);
 	auto filePath = configState.getProperty(CONFIGPROPS::FilePath);
 	if(filePath.isString()) {
 		return XMLReader::getInstance().loadXmlFile(filePath.toString());
@@ -222,8 +237,12 @@ bool JMidiOscTriggerAudioProcessor::readXmlFileAccordingToState()
 
 bool JMidiOscTriggerAudioProcessor::refresh()
 {
-    return readXmlFileAccordingToState();
+	OSCHandler::getInstance().disconnect();
+    readXmlFileAccordingToState();
 	// TODO: refresh ip/port if needed
+
+	OSCHandler::getInstance().connect();
+	return true;
 }
 
 

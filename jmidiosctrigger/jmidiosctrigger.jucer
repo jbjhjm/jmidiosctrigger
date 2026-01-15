@@ -37,8 +37,6 @@
       <FILE id="DBX4Yp" name="OSCHandler.cpp" compile="1" resource="0" file="Source/OSCHandler.cpp"/>
       <FILE id="jmYu41" name="OSCHandler.h" compile="0" resource="0" file="Source/OSCHandler.h"/>
       <FILE id="Ox1flB" name="StatusLog.h" compile="0" resource="0" file="Source/StatusLog.h"/>
-      <FILE id="AJP0sz" name="MidiUtils.h" compile="0" resource="0" file="Source/MidiUtils.h"/>
-      <FILE id="vFJh9W" name="MidiUtils.cpp" compile="1" resource="0" file="Source/MidiUtils.cpp"/>
       <FILE id="LizByP" name="XMLParser.cpp" compile="1" resource="0" file="Source/XMLParser.cpp"/>
       <FILE id="Jd3LaF" name="XMLParser.h" compile="0" resource="0" file="Source/XMLParser.h"/>
       <FILE id="hWKqLv" name="Store.cpp" compile="1" resource="0" file="Source/Store.cpp"/>

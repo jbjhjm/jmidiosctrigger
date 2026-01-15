@@ -26,6 +26,7 @@ public:
     ~XMLParser();
 
     bool loadXmlData(pugi::xml_document* doc);
+	void loadXmlConfigurationData();
     juce::String generateXmlDocumentation();
 
 	pugi::xml_node findMappingNode(int channel, int note);

@@ -25,6 +25,7 @@ public:
     ~OSCHandler();
 
 	bool connect();
+	bool disconnect();
     bool sendOSC(const pugi::xml_node& xmlOSCNode, juce::MidiMessage& midiInput);
 
 

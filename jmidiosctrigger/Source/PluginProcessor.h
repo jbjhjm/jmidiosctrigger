@@ -12,6 +12,7 @@
 #include "XMLReader.h"
 #include "../libraries/pugixml.hpp" 
 #include "StatusLog.h"
+#include "OSCHandler.h"
 
 //==============================================================================
 
@@ -68,8 +69,6 @@ public:
     bool refresh();
 
     StatusLog logger;
-
-    juce::Value midiDataInfo;
 
 
 

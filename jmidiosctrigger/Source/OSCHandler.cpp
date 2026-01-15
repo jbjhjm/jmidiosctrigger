@@ -36,11 +36,46 @@ OSCHandler::~OSCHandler()
 }
 
 bool OSCHandler::connect() {
+	auto& configState = Store::getState(STATES::Config);
+	const juce::var* ipVar = nullptr;
+	juce::String ip ;
+	int port;
+	
+	if(configState.hasProperty(CONFIGPROPS::XML_IP)) {
+		ipVar = &configState.getProperty(CONFIGPROPS::XML_IP);
+		if(ipVar->isString()) {
+			ip = ipVar->toString();
+		}
+	}
+	if(configState.hasProperty(CONFIGPROPS::IP)) {
+		ipVar = &configState.getProperty(CONFIGPROPS::IP);
+		if(ipVar->isString()) {
+			ip = ipVar->toString();
+		}
+	}
+	if(configState.hasProperty(CONFIGPROPS::XML_Port)) {
+		ipVar = &configState.getProperty(CONFIGPROPS::XML_Port);
+		if(ipVar->isInt()) {
+			port = static_cast<int>(*ipVar);
+		}
+	}
+	if(configState.hasProperty(CONFIGPROPS::Port)) {
+		ipVar = &configState.getProperty(CONFIGPROPS::Port);
+		if(ipVar->isInt()) {
+			port = static_cast<int>(*ipVar);
+		}
+	}
+
+	logger.log("fetched ip/port from GUI Inputs, values are: " + ip + ":" + juce::String(port));
+	showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
 	if (!sender.connect ("127.0.0.1", 9001)) { // [4]
-		showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
 		return false;
 	}
 	return true;
+}
+
+bool OSCHandler::disconnect() {
+	return sender.disconnect();
 }
 
 bool OSCHandler::sendOSC(const pugi::xml_node& xmlOSCNode, juce::MidiMessage& midiInput) {

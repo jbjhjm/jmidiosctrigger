@@ -613,9 +613,6 @@
     <ClCompile Include="..\..\Source\OSCHandler.cpp">
       <Filter>jmidiosctrigger\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\MidiUtils.cpp">
-      <Filter>jmidiosctrigger\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\XMLParser.cpp">
       <Filter>jmidiosctrigger\Source</Filter>
     </ClCompile>
@@ -3025,9 +3022,6 @@
       <Filter>jmidiosctrigger\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\StatusLog.h">
-      <Filter>jmidiosctrigger\Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\MidiUtils.h">
       <Filter>jmidiosctrigger\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\XMLParser.h">

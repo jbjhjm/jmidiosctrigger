@@ -205,7 +205,6 @@
     <ClCompile Include="..\..\libraries\pugixml.cpp"/>
     <ClCompile Include="..\..\Source\FileUtils.cpp"/>
     <ClCompile Include="..\..\Source\OSCHandler.cpp"/>
-    <ClCompile Include="..\..\Source\MidiUtils.cpp"/>
     <ClCompile Include="..\..\Source\XMLParser.cpp"/>
     <ClCompile Include="..\..\Source\Store.cpp"/>
     <ClCompile Include="..\..\Source\IDS.cpp"/>
@@ -2425,7 +2424,6 @@
     <ClInclude Include="..\..\Source\Store.h"/>
     <ClInclude Include="..\..\Source\OSCHandler.h"/>
     <ClInclude Include="..\..\Source\StatusLog.h"/>
-    <ClInclude Include="..\..\Source\MidiUtils.h"/>
     <ClInclude Include="..\..\Source\XMLParser.h"/>
     <ClInclude Include="..\..\Source\XMLReader.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>

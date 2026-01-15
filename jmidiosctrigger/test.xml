@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!--
-	Axe CC Commands
-
-	SCENE SELECT 	34
-	SCENE INCR 		123
-	SCENE DECR 		124
-	TEMPO TAP 		14
-	TUNER 			15
-	EXTERNAL 1 		16
-	EXTERNAL 2 		17
-	EXTERNAL 3 		18
-	EXTERNAL 4 		19
-
-	Presets PC Commands
-	There is no Preset increase/decrease.
-	To select a preset within current bank, send PC 0-127.
-	To switch banks, send a CC0 before with values 0-3.
--->
-
 <jmididata>
   
   <config>
-  
+	<IP value="127.0.0.1" />
+	<Port value="5555" />
+	<Filter_maxNote value="16" />
+	<Filter_extraChannel value="10" />
   </config>
 
   <mappings>

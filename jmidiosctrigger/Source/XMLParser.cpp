@@ -42,13 +42,48 @@ bool XMLParser::loadXmlData(pugi::xml_document* doc)
 	DBG("Debug: Selected root node " + juce::String(xmlRootNode.name()));
 
 	xmlConfigNode = xmlRootNode.child("config");
+	if (!xmlConfigNode) { logger.log("Error: No XML <config> node found. "); }
+	// logger.log("Found number of configs: " + juce::String(countNodeChildren(xmlConfigNode, "")));
 
 	xmlMappingsNode = xmlRootNode.child("mappings");
-	if (!xmlMappingsNode) { DBG("Error: No XML <mappings> node found. "); return false; }
+	if (!xmlMappingsNode) { logger.log("Error: No XML <mappings> node found. "); return false; }
+	// logger.log("Found number of mappings: " + juce::String(countNodeChildren(xmlMappingsNode, "mapping")));
 	DBG("Debug: Selected mappings group node " + juce::String(xmlMappingsNode.name()));
 
+	// for (pugi::xml_node child = xmlConfigNode.first_child(); child; child = child.next_sibling()) {
+	// 	logger.log("xmlConfigNode child name: " + juce::String(child.name()) );
+	// }
+
+	loadXmlConfigurationData();
 	xmlReadyState = true;
 	return true;
+}
+
+void XMLParser::loadXmlConfigurationData()
+{
+	auto& configState = Store::getState(STATES::Config);
+
+	auto x = countNodeChildren(xmlConfigNode, "");
+	// logger.log("loadXmlConfigurationData: <config> node contains " + juce::String(x) + " children");
+
+	// auto& childIterator = xmlConfigNode.children();
+
+	for (pugi::xml_node node = xmlConfigNode.first_child(); node; node = node.next_sibling()) {
+		auto const& name = node.name();
+		if(strcmp(name, "IP") == 0) {
+			configState.setProperty(CONFIGPROPS::XML_IP, juce::String( node.attribute("value").as_string() ) , nullptr);
+			logger.log("Read XML Config: XML_IP = " + juce::String( node.attribute("value").as_string() ));
+		} else if(strcmp(name, "Port") == 0) {
+			configState.setProperty(CONFIGPROPS::XML_Port, node.attribute("value").as_int() , nullptr );
+			logger.log("Read XML Config: Port = " + juce::String( node.attribute("value").as_int() ));
+		} else if(strcmp(name, "Filter_maxNote") == 0) {
+			configState.setProperty(CONFIGPROPS::FilterMaxNote, node.attribute("value").as_int() , nullptr );
+			logger.log("Read XML Config: Filter_maxNote = " + juce::String( node.attribute("value").as_int() ));
+		} else if(strcmp(name, "Filter_extraChannel") == 0) {
+			configState.setProperty(CONFIGPROPS::FilterExtraChannel, node.attribute("value").as_int() , nullptr );
+			logger.log("Read XML Config: FilterExtraChannel = " + juce::String( node.attribute("value").as_int() ));
+		}
+	}
 }
 
 
@@ -119,16 +154,16 @@ bool XMLParser::findEntryforMidiEvent(juce::MidiMessage& inputInfo, pugi::xml_no
 	return found;
 }
 
-int XMLParser::countNodeChildren(pugi::xml_node& node, const char * name = "")
+int XMLParser::countNodeChildren(pugi::xml_node& node, const char * name)
 {
-	if (name != "")
+	if (juce::String(name).length() > 0)
 	{
 		auto& childIterator = node.children(name);
 		return std::distance(childIterator.begin(), childIterator.end());
 	}
 	else
 	{
-		auto& childIterator = node.children(name);
+		auto& childIterator = node.children();
 		return std::distance(childIterator.begin(), childIterator.end());
 	}
 }
@@ -139,27 +174,27 @@ juce::String XMLParser::generateXmlDocumentation()
 	//logger.log("Debug: Generate documentation");
 
 	juce::String doc = "";
-	pugi::xml_node eventNode;
-	juce::Array<pugi::string_t> eventIds;
-	pugi::string_t eventName;
+	juce::String channel;
+	juce::String key;
+	juce::String command;
+	// pugi::xml_node eventNode;
+	// juce::Array<pugi::string_t> eventIds;
+	// pugi::string_t eventName;
 
 	//DBG("Debug: Selected events group node " );
 
 	for (pugi::xml_node node = xmlMappingsNode.child("mapping"); node; node = node.next_sibling("mapping")) {
 		// logger.log("Documenting a mapping node");
+		channel = juce::String (node.attribute("channel").as_string());
+		key = juce::String (node.attribute("key").as_string());
+		command = juce::String (node.attribute("command").as_string());
 
 		// MidiUtils::MidiMessageAttributes info = getMidiMessageAttributes(node);
 
-		// doc +=
-		// 	"Mapping for Channel "
-		// 	+ juce::String(info.channel) +
-		// 	" [type=" + info.type +
-		// 	"] [ " + juce::String(info.key) + " " + juce::String(info.value) + " ] " +
-		// 	" ";
+		doc += "<Mapping> " + channel + "." + key + " = " + command + "\n";
 
 	}
 
-	//midiDataInfo = doc;
 	DBG("Successfully parsed file.");
 	return doc;
 }
