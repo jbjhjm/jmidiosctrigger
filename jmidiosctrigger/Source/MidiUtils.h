@@ -30,10 +30,6 @@ namespace MidiUtils {
 		int value;
 	};
 
-	juce::MidiMessage createMidiMessage(MidiMessageInfo info);
-	juce::String getPropFromMidiNodeAttributes(juce::String varName, MidiMessageAttributes& attr);
-	int getPropFromMidiMessageInfo(juce::String varName, MidiMessageInfo info);
-	void setPropInMidiMessageInfo(juce::String varName, int value, MidiMessageInfo& info);
 
 }
 

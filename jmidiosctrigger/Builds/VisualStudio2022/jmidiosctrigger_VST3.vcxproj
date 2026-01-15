@@ -211,7 +211,7 @@
       <AdditionalDependencies>jmidiosctrigger.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>copy /Y &quot;$(OutDir)$(TargetFileName)&quot; &quot;%CommonProgramW6432%\VST3\$(TargetFileName)&quot;</Command>
+      <Command>copy /Y &quot;$(OutDir)$(TargetFileName)&quot; &quot;E:\Projects\jmidiosctrigger\Reaper\Plugins\FX\Sector\$(TargetFileName)&quot;</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

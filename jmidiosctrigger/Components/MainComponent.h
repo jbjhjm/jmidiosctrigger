@@ -50,7 +50,7 @@ public:
     void showFileDialogue();
     void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
     void updateFilePathField();
-   //[/UserMethods]
+    //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
     void resized() override;

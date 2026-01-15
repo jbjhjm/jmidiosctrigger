@@ -82,7 +82,9 @@
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="jmidiosctrigger"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="jmidiosctrigger"/>
-        <CONFIGURATION isDebug="1" name="DebugReaper" targetName="jmidiosctrigger" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="1" name="DebugReaper" enablePluginBinaryCopyStep="1"
+                       vst3BinaryLocation="E:\Projects\jmidiosctrigger\Reaper\Plugins\FX\Sector"
+                       userNotes="Reaper.exe path must be set within visual studio project settings -&gt; debug -&gt; target"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../Projucer/modules"/>
