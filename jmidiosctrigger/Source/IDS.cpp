@@ -32,4 +32,6 @@ namespace PROPS
 namespace CONFIGPROPS
 {
     const juce::Identifier FilePath("FilePath");
+    const juce::Identifier IP("IP");
+    const juce::Identifier Port("Port");
 }

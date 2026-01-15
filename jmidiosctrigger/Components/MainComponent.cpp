@@ -201,12 +201,20 @@ void MainComponent::buttonClicked (juce::Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == refreshFileButton.get())
     {
         //[UserButtonCode_refreshFileButton] -- add your button handler code here..
-        (*audioProcessor).reloadFile();
+		updateIpAndPort();
+        (*audioProcessor).refresh();
         //[/UserButtonCode_refreshFileButton]
     }
 
     //[UserbuttonClicked_Post]
     //[/UserbuttonClicked_Post]
+}
+
+void MainComponent::updateIpAndPort() {
+	juce::String port = inputPort->getText();
+	juce::String ip = inputIp->getText();
+	// TODO: update stored port/ip
+
 }
 
 
@@ -257,8 +265,9 @@ void MainComponent::showFileDialogue()
                 juce::var relPath = juce::var(FileUtils::getRelativeFilePath(file));
                 logger.log("resolved selected file to maybe-relative path: " + relPath.toString());
                 configState.setProperty(CONFIGPROPS::FilePath, relPath, nullptr);
+				updateIpAndPort();
+      			(*audioProcessor).refresh();
 
-                (*audioProcessor).loadXmlFile(relPath.toString());
             }
         }
     );

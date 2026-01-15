@@ -172,7 +172,8 @@ juce::AudioProcessorEditor* JMidiOscTriggerAudioProcessor::createEditor()
     return new JMidiOscTriggerAudioProcessorEditor (*this);
 }
 
-//==============================================================================
+//=== Load/Save persisted data ===========================================================================
+
 void JMidiOscTriggerAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     auto& configState = Store::getState(STATES::Config);
@@ -199,15 +200,7 @@ void JMidiOscTriggerAudioProcessor::setStateInformation(const void* data, int si
 	// TODO: instead of triggering manual file updates from multiple points,
 	// a State listener should be added to react accordingly and trigger XML reload.
 
-	auto filePath = configState.getProperty(CONFIGPROPS::FilePath);
-
-	if(filePath.isString()) {
-        logger.log("loaded State Information. config file path: " + filePath.toString());
-		loadXmlFile(filePath.toString());
-    }
-    else {
-        logger.log("loaded State Information - no config file path found.");
-    }
+	refresh();
 
 }
 
@@ -215,61 +208,23 @@ void JMidiOscTriggerAudioProcessor::setStateInformation(const void* data, int si
 //==============================================================================
 
 
-bool JMidiOscTriggerAudioProcessor::loadXmlFile(const juce::File& fi)
+bool JMidiOscTriggerAudioProcessor::readXmlFileAccordingToState()
 {
-	return XMLReader::getInstance().loadXmlFile(fi);
-}
-
-bool JMidiOscTriggerAudioProcessor::loadXmlFile(const juce::String& filePath)
-{
-	return XMLReader::getInstance().loadXmlFile(filePath);
-}
-
-bool JMidiOscTriggerAudioProcessor::reloadFile()
-{
-	return XMLReader::getInstance().reloadFile();
-}
-
-
-
-auto JMidiOscTriggerAudioProcessor::getMidiMessageTypeAndKey(const juce::MidiMessage& message)
-{
-	juce::String type = "";
-	int channel = 0;
-	int key = 0;
-    int value = 0;
-
-	if (message.isNoteOn())
-	{
-		type = "noteon";
-		key = message.getNoteNumber();
-        value = message.getVelocity();
-	}
-	else if (message.isNoteOff())
-	{
-		type = "noteoff";
-		key = message.getNoteNumber();
-        value = message.getVelocity();
+	auto filePath = configState.getProperty(CONFIGPROPS::FilePath);
+	if(filePath.isString()) {
+		return XMLReader::getInstance().loadXmlFile(filePath.toString());
     }
-	else if (message.isController())
-	{
-		type = "cc";
-		key = message.getControllerNumber();
-        value = message.getControllerValue();
+    else {
+        logger.log("loaded State Information - no config file path found.");
+		return false;
     }
-	else if (message.isProgramChange())
-	{
-		type = "pc";
-		key = message.getProgramChangeNumber();
-	}
-
-    struct result { juce::String type; int key; int value; };
-	return result{ type, key, value };
-
 }
 
-
-
+bool JMidiOscTriggerAudioProcessor::refresh()
+{
+    return readXmlFileAccordingToState();
+	// TODO: refresh ip/port if needed
+}
 
 
 

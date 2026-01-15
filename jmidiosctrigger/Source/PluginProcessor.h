@@ -64,9 +64,8 @@ public:
 
     // String currentStatus = "___";
 
-    bool loadXmlFile(const juce::String& filePath);
-    bool loadXmlFile(const juce::File& fi);
-    bool reloadFile();
+    bool readXmlFileAccordingToState();
+    bool refresh();
 
     StatusLog logger;
 
@@ -76,7 +75,6 @@ public:
 
 private:
     //==============================================================================
-    auto getMidiMessageTypeAndKey(const juce::MidiMessage& message);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JMidiOscTriggerAudioProcessor)
 };
