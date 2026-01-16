@@ -10,9 +10,40 @@
 /**
   Reminder on XML features
   - <mapping> listens to a certain kind of midi input (=targetNode)
+
+  pugixml does not use raw pointers because it uses pugi::xml_node and pugi::xml_attribute as lightweight, non-owning handles (essentially smart pointer-like wrappers) to XML data stored within a pugi::xml_document.	
+	This design means:
+	xml_node objects are not raw pointers but handles to nodes in the document tree. 
+	They are shallow references—they do not own the data they point to. 
+	The actual XML data is owned and managed by the xml_document object.
+	You must keep the xml_document alive as long as you have xml_node handles pointing into it. 
   */
 
 #include "XMLParser.h"
+
+// we know channel <= 16 and note <= 127, so we can join the ints into a combined int.
+int getCacheKey(int channel, int note)
+{
+	return (channel << 8) + note;
+}
+juce::String cacheKeyToChannelAndKeyString(int cacheKey)
+{
+	return "[" + juce::String(cacheKey >> 8) + "." + juce::String(cacheKey & 0x000000FF) + "]";
+}
+
+juce::String oscParamsToString(const juce::Array<OscParam> & oscParams) {
+	juce::String paramsString = "";
+	for (const auto& param : oscParams) {
+		paramsString += "[" + param.type + "," + param.value + "] ";
+	}
+	return paramsString;
+}
+
+juce::String oscInstructionToString(const OscInstruction& instruction) {
+	auto paramsString = oscParamsToString(instruction.params);
+	return juce::String( instruction.command + " Params[" + juce::String(instruction.params.size()) + "]:" + paramsString);
+}
+
 
 XMLParser& XMLParser::getInstance()
 {
@@ -29,19 +60,22 @@ XMLParser::XMLParser():
 
 XMLParser::~XMLParser()
 {
+	// no need to destroy xmlDoc, it is the only pointer to document.
+	// when the pointer is destroyed or overwritten, old document will be closed.
 }
 
 
 bool XMLParser::loadXmlData(pugi::xml_document* doc)
 {
 	xmlReadyState = false;
+	lookupMap.clear();
 
 	xmlDoc = doc;
-	xmlRootNode = xmlDoc->document_element();
+	auto xmlRootNode = xmlDoc->document_element();
 	if (!xmlRootNode) { DBG("Error: No XML root node found. "); return false; }
 	DBG("Debug: Selected root node " + juce::String(xmlRootNode.name()));
 
-	xmlConfigNode = xmlRootNode.child("config");
+	auto xmlConfigNode = xmlRootNode.child("config");
 	if (!xmlConfigNode) { logger.log("Error: No XML <config> node found. "); }
 	// logger.log("Found number of configs: " + juce::String(countNodeChildren(xmlConfigNode, "")));
 
@@ -54,18 +88,19 @@ bool XMLParser::loadXmlData(pugi::xml_document* doc)
 	// 	logger.log("xmlConfigNode child name: " + juce::String(child.name()) );
 	// }
 
-	loadXmlConfigurationData();
+	loadXmlConfigurationData(xmlConfigNode);
+	cacheXmlMappings(xmlMappingsNode);
 	xmlReadyState = true;
 	return true;
 }
 
-void XMLParser::loadXmlConfigurationData()
+void XMLParser::loadXmlConfigurationData(pugi::xml_node configNode)
 {
 	auto& configState = Store::getState(STATES::Config);
-	// auto x = countNodeChildren(xmlConfigNode, "");
+	// auto x = countNodeChildren(configNode, "");
 	// logger.log("loadXmlConfigurationData: <config> node contains " + juce::String(x) + " children");
 
-	for (pugi::xml_node node = xmlConfigNode.first_child(); node; node = node.next_sibling()) {
+	for (pugi::xml_node node = configNode.first_child(); node; node = node.next_sibling()) {
 		auto const& name = node.name();
 		if(strcmp(name, "IP") == 0) {
 			configState.setProperty(CONFIGPROPS::XML_IP, juce::String( node.attribute("value").as_string() ) , nullptr);
@@ -86,6 +121,45 @@ void XMLParser::loadXmlConfigurationData()
 	}
 }
 
+void XMLParser::cacheXmlMappings(pugi::xml_node mappingsNode)
+{
+	int channel;
+	int key;
+	int cacheKey;
+
+	for (pugi::xml_node node = mappingsNode.child("mapping"); node; node = node.next_sibling("mapping")) {
+		// logger.log("Documenting a mapping node");
+		channel = node.attribute("channel").as_int();
+		key = node.attribute("key").as_int();
+		cacheKey = getCacheKey(channel, key);
+		// logger.log("created cacheKey " + juce::String(channel) + "." + juce::String(key) + " = " + juce::String(cacheKey) + cacheKeyToChannelAndKeyString(cacheKey));
+
+		OscInstruction instruction;
+		instruction.command = juce::String( node.attribute("command").as_string() );
+
+		for (pugi::xml_node param = node.child("param"); param; param = param.next_sibling("param")) {
+			auto type = juce::String( param.attribute("type").as_string() );
+			auto value = juce::String( param.attribute("value").as_string() );
+
+			instruction.params.add(
+				OscParam { type, value }
+			);
+		}
+		lookupMap.set(cacheKey, instruction);
+	}
+
+	logger.log("Created Mappings cache containing " + juce::String(lookupMap.size()) + " entries.");
+}
+
+const OscInstruction XMLParser::findCachedMapping(int channel, int note)
+{
+	auto cacheKey = getCacheKey(channel, note);
+	if(lookupMap.contains(cacheKey)) {
+		return lookupMap[cacheKey];
+	} else {
+		return OscInstruction {""};
+	}
+}
 
 pugi::xml_node XMLParser::findMappingNode(int channel, int note)
 {
@@ -127,7 +201,7 @@ int XMLParser::countNodeChildren(pugi::xml_node& node, const char * name)
 
 juce::String XMLParser::generateXmlDocumentation()
 {
-	if (!xmlRootNode) return "no configuration loaded, aborting doc generation";
+	if (!xmlMappingsNode) return "no configuration loaded, aborting doc generation";
 	//logger.log("Debug: Generate documentation");
 
 	juce::String doc = "";
@@ -135,28 +209,18 @@ juce::String XMLParser::generateXmlDocumentation()
 	juce::String key;
 	juce::String command;
 
-	for (pugi::xml_node node = xmlMappingsNode.child("mapping"); node; node = node.next_sibling("mapping")) {
-		// logger.log("Documenting a mapping node");
-		channel = juce::String (node.attribute("channel").as_string());
-		key = juce::String (node.attribute("key").as_string());
-		command = juce::String (node.attribute("command").as_string());
+	// lookupMap is unsorted, build an ordered list of contained keys
+	LookupMapKeyComparator comparator;
+	juce::Array<int> sortedCacheKeys;
+	for (juce::HashMap<int, OscInstruction>::Iterator entry(lookupMap); entry.next();) {
+		sortedCacheKeys.add(entry.getKey());
+	}
+	sortedCacheKeys.sort(comparator);
 
-		juce::String paramsString = "";
-		for (pugi::xml_node param = node.child("param"); param; param = param.next_sibling("param")) {
-			auto type = juce::String( param.attribute("type").as_string() );
-			auto valueStr = juce::String( param.attribute("value").as_string() );
-
-			if(type == "f") {
-				paramsString += "[f," + valueStr + "] ";
-			} else if (type == "s") {
-				paramsString += "[s," + valueStr + "] ";
-			}
-		}
-
-		// MidiUtils::MidiMessageAttributes info = getMidiMessageAttributes(node);
-
-		doc += "<Mapping> " + channel + "." + key + " = " + command + " " + paramsString + "\n";
-
+	for (const auto cacheKey : sortedCacheKeys) {
+		auto& channelAndKey = cacheKeyToChannelAndKeyString(cacheKey);
+		auto& instr = lookupMap[cacheKey];
+		doc += "<Mapping> " + channelAndKey + oscInstructionToString(instr) + "\n";
 	}
 
 	DBG("Successfully parsed file.");

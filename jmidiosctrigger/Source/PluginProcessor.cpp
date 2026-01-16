@@ -136,15 +136,8 @@ void JMidiOscTriggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 	bool midiMessageHasOscTarget = true; 
 	pugi::xml_node xmlEntry;
 
-	// auto numNotes = midiMessages.getNumEvents();
-	// if(numNotes > 0) {
-	// 	logger.log("Handle incoming midi events " + juce::String(numNotes));
-	// }
-
     for (juce::MidiBuffer::Iterator i(midiMessages); i.getNextEvent(m, time);)
     {
-		//logger.logMidiMessage(m, "processBlock");
-        // processMidiInputMessage(m, midiOutput);
 
 		// efficient pre-check: only allow noteon events & certain midi regions
 		if(!m.isNoteOn(true)) continue;
@@ -152,17 +145,15 @@ void JMidiOscTriggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 		
 		if(isMidiMessageInWatchedRange) {
 
-			midiMessageHasOscTarget = XMLReader::getInstance().parser->findEntryforMidiEvent(m, xmlEntry);
-
-			if(midiMessageHasOscTarget) {
-				logger.log("Found midiMessage with OSC target [channel=" + juce::String(m.getChannel()) +"]" + " [key=" + juce::String(m.getNoteNumber())+"]");
-				
+			const OscInstruction& instruction = XMLReader::getInstance().parser->findCachedMapping(m.getChannel(), m.getNoteNumber());
+			// instruction.command will be empty if no match is found.
+			if(instruction.command != "") {
+				// logger.log("Found Instruction:" + juce::String(instruction.params.size()) +" "+ oscInstructionToString(instruction));
 				midiMessages.clear(time,0);
-				OSCHandler::getInstance().sendOSC(xmlEntry, m);
+				OSCHandler::getInstance().sendOSC(instruction, m);
 				continue;
 			}
 		}
-		// logger.log("midiMessage has no OSC target [channel=" + juce::String(m.getChannel()) +"]" + " [key=" + juce::String(m.getNoteNumber())+"]");
 
     }
 
