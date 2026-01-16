@@ -60,7 +60,6 @@ bool OSCHandler::connect() {
 		}
 	}
 	if(configState.hasProperty(CONFIGPROPS::IP)) {
-		// TODO: Not working yet
 		ipVar = &configState.getProperty(CONFIGPROPS::IP);
 		if(ipVar->isString() && ipVar->toString() != "" ) {
 			ip = ipVar->toString();

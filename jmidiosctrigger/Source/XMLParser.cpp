@@ -104,49 +104,6 @@ pugi::xml_node XMLParser::findMappingNode(int channel, int note)
 }
 
 
-
-// MidiUtils::MidiMessageInfo XMLParser::midiNodeToMidiMessageInfo(pugi::xml_node & midiNode, MidiUtils::MidiMessageInfo & inputInfo)
-// {
-// 	auto& midiNodeAttr = getMidiMessageAttributes(midiNode);
-
-// 	MidiUtils::MidiMessageInfo info = {
-// 		midiNodeAttr.type,
-// 		1,
-// 		0,
-// 		0
-// 	};
-
-// 	std::map<juce::String, int> data;
-// 	const pugi::char_t* keys[]{ "channel","key","value" };
-
-// 	for (auto& key : keys) {
-// 		juce::String strVal = MidiUtils::getPropFromMidiNodeAttributes(key, midiNodeAttr);
-// 		bool isVar_dollar = strVal.startsWith("$");
-// 		bool isVar_at = strVal.startsWith("@");
-// 		int value;
-// 		if (isVar_dollar || isVar_at) {
-// 			auto varName = strVal.substring(1);
-// 			if (isVar_dollar) {
-// 				auto varNode = xmlVarsNode.child(varName.getCharPointer());
-// 				value = varNode.attribute("value").as_int();
-// 			}
-// 			else 
-// 			{
-// 				value = MidiUtils::getPropFromMidiMessageInfo(varName, inputInfo);
-// 			}
-// 		}
-// 		else 
-// 		{
-// 			value = strVal.getIntValue();
-// 		}
-// 		MidiUtils::setPropInMidiMessageInfo(key, value, info);
-// 	}
-
-// 	return info;
-// }
-
-
-
 bool XMLParser::findEntryforMidiEvent(juce::MidiMessage& inputInfo, pugi::xml_node& xmlEntry)
 {
 	xmlEntry = findMappingNode(inputInfo.getChannel(), inputInfo.getNoteNumber());
@@ -177,11 +134,6 @@ juce::String XMLParser::generateXmlDocumentation()
 	juce::String channel;
 	juce::String key;
 	juce::String command;
-	// pugi::xml_node eventNode;
-	// juce::Array<pugi::string_t> eventIds;
-	// pugi::string_t eventName;
-
-	//DBG("Debug: Selected events group node " );
 
 	for (pugi::xml_node node = xmlMappingsNode.child("mapping"); node; node = node.next_sibling("mapping")) {
 		// logger.log("Documenting a mapping node");
@@ -189,9 +141,21 @@ juce::String XMLParser::generateXmlDocumentation()
 		key = juce::String (node.attribute("key").as_string());
 		command = juce::String (node.attribute("command").as_string());
 
+		juce::String paramsString = "";
+		for (pugi::xml_node param = node.child("param"); param; param = param.next_sibling("param")) {
+			auto type = juce::String( param.attribute("type").as_string() );
+			auto valueStr = juce::String( param.attribute("value").as_string() );
+
+			if(type == "f") {
+				paramsString += "[f," + valueStr + "] ";
+			} else if (type == "s") {
+				paramsString += "[s," + valueStr + "] ";
+			}
+		}
+
 		// MidiUtils::MidiMessageAttributes info = getMidiMessageAttributes(node);
 
-		doc += "<Mapping> " + channel + "." + key + " = " + command + "\n";
+		doc += "<Mapping> " + channel + "." + key + " = " + command + " " + paramsString + "\n";
 
 	}
 

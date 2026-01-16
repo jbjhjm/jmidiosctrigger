@@ -5,7 +5,6 @@ namespace FileUtils {
 
 	juce::String getRelativeFilePath(const juce::File& fi)
 	{
-		// TODO: add a depth limit...? 
 		if (!fi.exists())
 		{
 			//logger.log("Error - file does not exist: " + fi.getFullPathName(),1);

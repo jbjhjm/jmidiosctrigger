@@ -206,9 +206,6 @@ void JMidiOscTriggerAudioProcessor::setStateInformation(const void* data, int si
     auto configState = Store::importToState(STATES::Config, regularXmlPointer);
 
     delete regularXmlPointer;
-
-	// TODO: instead of triggering manual file updates from multiple points,
-	// a State listener should be added to react accordingly and trigger XML reload.
 	
 	initialized = true;
 	logger.log("initialized State Information.");
@@ -237,7 +234,7 @@ bool JMidiOscTriggerAudioProcessor::readXmlFileAccordingToState()
 bool JMidiOscTriggerAudioProcessor::refresh()
 {
 	if(!initialized) return false;
-	
+
 	OSCHandler::getInstance().disconnect();
     readXmlFileAccordingToState();
 
