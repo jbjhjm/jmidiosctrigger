@@ -119,6 +119,11 @@ bool OSCHandler::disconnect() {
 
 bool OSCHandler::sendOSC(const pugi::xml_node& xmlOSCNode, juce::MidiMessage& midiInput) {
 	juce::String command = juce::String (xmlOSCNode.attribute("command").as_string());
+
+	// standard OSC does not allow whitespaces in address and OSCSender checks for conforming address.
+	// so we need to replace whitespaces and convert back in target application if needed.
+	command = command.replaceCharacter(' ','~');
+
     int velocity = midiInput.getVelocity();
 	float floatVelocity = velocity / 2.550; // MA expects float in range of 0-100
 	juce::OSCMessage msg(command);

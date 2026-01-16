@@ -20,10 +20,10 @@
     <mapping channel="1" key="004" command="/executor/1.3"><param type="f" value="50" /></mapping>
     <mapping channel="1" key="005" command="/executor/1.3" ><param type="f" value="%f" /><param type="f" value="0.3" /></mapping>
     <mapping channel="1" key="006" command="/executor/202/goto/4.2" />
-    <mapping channel="1" key="007" command="/executor/202/goto/4.2" />
-    <mapping channel="1" key="008" command="/page/main/executor/show_start/100" />
+    <mapping channel="1" key="007" command="/page/Master~Ch8" />
+    <mapping channel="1" key="008" command="/page/Master~Ch8/executor/Sunstrips"><param type="f" value="25.0" /></mapping>
     <mapping channel="1" key="009" command="/executor/202/goto/4.2"><param type="f" value="0.5" /></mapping>
-    <mapping channel="1" key="010" command="/cmd"><param type="s" value="Select Fixtures 1.1 thru 10.1" /></mapping>
+    <mapping channel="1" key="010" command="/cmd"><param type="s" value="Select Executor 7.101" /></mapping>
     <mapping channel="1" key="011" command="/executor/3.106"><param type="f" value="%f" /><param type="f" value="0.5" /></mapping>
   </mappings>
   
