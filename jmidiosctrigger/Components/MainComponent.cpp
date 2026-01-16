@@ -138,6 +138,8 @@ MainComponent::MainComponent (JMidiOscTriggerAudioProcessor& p)
     //[Constructor] You can add your own custom stuff here..
     // update initial value and connect to store for future updates
     updateFilePathField();
+    updateIpField();
+    updatePortField();
     Store::getRoot().addListener(this);
 
     //[/Constructor]
@@ -213,7 +215,7 @@ void MainComponent::buttonClicked (juce::Button* buttonThatWasClicked)
     else if (buttonThatWasClicked == refreshFileButton.get())
     {
         //[UserButtonCode_refreshFileButton] -- add your button handler code here..
-		updateIpAndPort();
+		sendIpAndPortToState();
         (*audioProcessor).refresh();
         //[/UserButtonCode_refreshFileButton]
     }
@@ -226,19 +228,15 @@ void MainComponent::buttonClicked (juce::Button* buttonThatWasClicked)
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
-void MainComponent::updateIpAndPort() {
+void MainComponent::sendIpAndPortToState() {
 	juce::String port = inputPort->getText();
 	juce::String ip = inputIp->getText();
 
 	auto configState = Store::getState(STATES::Config);
 
-	// if(ip.length > 0) {
-		configState.setProperty(CONFIGPROPS::IP, ip, nullptr);
-	// }
-	// if(port.length > 0) {
-		configState.setProperty(CONFIGPROPS::Port, port, nullptr);
-	// }
-	StatusLog::getInstance().log("updateIpAndPort, values are: " + ip + ":" + port);
+	configState.setProperty(CONFIGPROPS::IP, ip, nullptr);
+	configState.setProperty(CONFIGPROPS::Port, port, nullptr);
+	StatusLog::getInstance().log("sendIpAndPortToState, values are: " + ip + ":" + port);
 
 }
 void MainComponent::valueTreePropertyChanged(juce::ValueTree& tree, const juce::Identifier& property)
@@ -246,20 +244,35 @@ void MainComponent::valueTreePropertyChanged(juce::ValueTree& tree, const juce::
     if (property == CONFIGPROPS::FilePath) {
         updateFilePathField();
     } else if (property == CONFIGPROPS::IP) {
-        // TODO: implement
+		updateIpField();
     } else if (property == CONFIGPROPS::Port) {
-        // TODO: implement
+		updatePortField();
     }
 }
 
 void MainComponent::updateFilePathField()
 {
-	auto configState = Store::getState(STATES::Config);
-	auto& currPathValue = configState.getProperty(CONFIGPROPS::FilePath);
-	if (currPathValue.isString()) {
-		filepathLabel->setText("Selected File: " + currPathValue.toString(), juce::NotificationType::dontSendNotification);
+	auto& value = Store::getState(STATES::Config).getProperty(CONFIGPROPS::FilePath);
+	if (value.isString()) {
+		filepathLabel->setText("Selected File: " + value.toString(), juce::NotificationType::dontSendNotification);
 	} else {
 		filepathLabel->setText("No Config file found. Select a config file to get started.", juce::NotificationType::dontSendNotification);
+	}
+}
+
+void MainComponent::updateIpField()
+{
+	auto& value = Store::getState(STATES::Config).getProperty(CONFIGPROPS::IP);
+	if (value.isString()) {
+		inputIp->setText(value.toString(), juce::NotificationType::dontSendNotification);
+	}
+}
+
+void MainComponent::updatePortField()
+{
+	auto& value = Store::getState(STATES::Config).getProperty(CONFIGPROPS::Port);
+	if (value.isString()) {
+		inputPort->setText(value.toString(), juce::NotificationType::dontSendNotification);
 	}
 }
 

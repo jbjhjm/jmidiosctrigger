@@ -50,7 +50,9 @@ public:
     void showFileDialogue();
     void valueTreePropertyChanged(juce::ValueTree& treeWhosePropertyHasChanged, const juce::Identifier& property) override;
     void updateFilePathField();
-	void updateIpAndPort();
+	void updateIpField();
+	void updatePortField();
+	void sendIpAndPortToState();
     //[/UserMethods]
 
     void paint (juce::Graphics& g) override;
