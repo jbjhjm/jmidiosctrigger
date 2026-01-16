@@ -5,6 +5,7 @@
   <config>
 	<IP value="127.0.0.1" />
 	<Port value="4560" />
+	<PortFallback value="4567" />
 	<Filter_maxNote value="16" />
 	<Filter_extraChannel value="10" />
   </config>
@@ -16,9 +17,9 @@
     <mapping channel="1" key="001" command="/page/16" />
     <mapping channel="1" key="002" command="/executor/202/go" />
     <mapping channel="1" key="003" command="/executor/202/off" />
-    <mapping channel="1" key="004" command="/executor/3.106"><param type="f" value="0.5" /></mapping>
-    <mapping channel="1" key="005" command="/executor/3.106,ff,0.5,0.3" />
-    <mapping channel="1" key="006" command="/executor/3.106" ><param type="f" value="%f" /><param type="f" value="0.3" /></mapping>
+    <mapping channel="1" key="004" command="/executor/1.3"><param type="f" value="50" /></mapping>
+    <mapping channel="1" key="005" command="/executor/1.3" ><param type="f" value="%f" /><param type="f" value="0.3" /></mapping>
+    <mapping channel="1" key="006" command="/executor/202/goto/4.2" />
     <mapping channel="1" key="007" command="/executor/202/goto/4.2" />
     <mapping channel="1" key="008" command="/page/main/executor/show_start/100" />
     <mapping channel="1" key="009" command="/executor/202/goto/4.2"><param type="f" value="0.5" /></mapping>

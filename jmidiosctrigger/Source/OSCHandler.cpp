@@ -51,6 +51,7 @@ bool OSCHandler::connect() {
 	const juce::var* ipVar = nullptr;
 	juce::String ip ;
 	int port;
+	int fallbackPort = 0;
 	
 	if(configState.hasProperty(CONFIGPROPS::XML_IP)) {
 		ipVar = &configState.getProperty(CONFIGPROPS::XML_IP);
@@ -77,6 +78,12 @@ bool OSCHandler::connect() {
 			port = ipVar->toString().getIntValue();
 		}
 	}
+	if(configState.hasProperty(CONFIGPROPS::XML_PortFallback)) {
+		ipVar = &configState.getProperty(CONFIGPROPS::XML_PortFallback);
+		if(ipVar->isInt()) {
+			fallbackPort = static_cast<int>(*ipVar);
+		}
+	}
 
 	if(!isValidIPv4(ip.getCharPointer())) {
 		logger.log("Invalid IP detected: " + ip);
@@ -88,12 +95,22 @@ bool OSCHandler::connect() {
 	}
 
 	logger.log("Connecting to " + ip + ":" + juce::String(port) + "...");
-	if (!sender.connect (ip, port)) { // [4]
-		showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
-		// TODO: Possible to implement a fallback?
-		return false;
+	if (sender.connect (ip, port)) return true;
+
+	logger.log("Error: Failed to connect.");
+
+	if(isValidPort(fallbackPort)) {
+		logger.log("Connecting to fallback " + ip + ":" + juce::String(fallbackPort) + "...");
+		if (sender.connect (ip, fallbackPort)) return true;
+		logger.log("Error: Failed to connect.");
+	} else {
+		logger.log("No valid fallbackPort found.");
 	}
-	return true;
+
+	showConnectionErrorMessage ("Error: could not establish OSC connection.");
+
+	return false;
+		
 }
 
 bool OSCHandler::disconnect() {

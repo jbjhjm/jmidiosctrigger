@@ -36,6 +36,7 @@ namespace CONFIGPROPS
     const juce::Identifier Port("Port");
     const juce::Identifier XML_IP("XML_IP");
     const juce::Identifier XML_Port("XML_Port");
+    const juce::Identifier XML_PortFallback("XML_PortFallback");
     const juce::Identifier FilterMaxNote("FilterMaxNote");
     const juce::Identifier FilterExtraChannel("FilterExtraChannel");
 }

@@ -73,6 +73,9 @@ void XMLParser::loadXmlConfigurationData()
 		} else if(strcmp(name, "Port") == 0) {
 			configState.setProperty(CONFIGPROPS::XML_Port, node.attribute("value").as_int() , nullptr );
 			// logger.log("Read XML Config: Port = " + juce::String( node.attribute("value").as_int() ));
+		} else if(strcmp(name, "PortFallback") == 0) {
+			configState.setProperty(CONFIGPROPS::XML_PortFallback, node.attribute("value").as_int() , nullptr );
+			// logger.log("Read XML Config: Port = " + juce::String( node.attribute("value").as_int() ));
 		} else if(strcmp(name, "Filter_maxNote") == 0) {
 			configState.setProperty(CONFIGPROPS::FilterMaxNote, node.attribute("value").as_int() , nullptr );
 			// logger.log("Read XML Config: Filter_maxNote = " + juce::String( node.attribute("value").as_int() ));
