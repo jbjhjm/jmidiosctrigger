@@ -76,9 +76,9 @@ MainComponent::MainComponent (JMidiOscTriggerAudioProcessor& p)
     inputIp->setCaretVisible (true);
     inputIp->setPopupMenuEnabled (true);
     inputIp->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0xff1f2427));
-    inputIp->setText (TRANS("<ip address>"));
+    inputIp->setText (juce::String());
 
-    inputIp->setBounds (144, 56, 150, 24);
+    inputIp->setBounds (240, 56, 136, 24);
 
     inputPort.reset (new juce::TextEditor ("input_port"));
     addAndMakeVisible (inputPort.get());
@@ -89,9 +89,9 @@ MainComponent::MainComponent (JMidiOscTriggerAudioProcessor& p)
     inputPort->setCaretVisible (true);
     inputPort->setPopupMenuEnabled (true);
     inputPort->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0xff1f2427));
-    inputPort->setText (TRANS("<port>"));
+    inputPort->setText (juce::String());
 
-    inputPort->setBounds (304, 56, 150, 24);
+    inputPort->setBounds (383, 56, 62, 24);
 
     juce__label.reset (new juce::Label ("new label",
                                         TRANS("JMidiOscTrigger")));
@@ -115,6 +115,17 @@ MainComponent::MainComponent (JMidiOscTriggerAudioProcessor& p)
     filepathLabel->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
 
     filepathLabel->setBounds (16, 84, 576, 24);
+
+    juce__label2.reset (new juce::Label ("new label",
+                                         TRANS("custom IP/Port:")));
+    addAndMakeVisible (juce__label2.get());
+    juce__label2->setFont (juce::Font (15.00f, juce::Font::plain).withTypefaceStyle ("Regular"));
+    juce__label2->setJustificationType (juce::Justification::centredLeft);
+    juce__label2->setEditable (false, false, false);
+    juce__label2->setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    juce__label2->setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x00000000));
+
+    juce__label2->setBounds (148, 60, 88, 16);
 
     cachedImage_background_png_1 = juce::ImageCache::getFromMemory (background_png, background_pngSize);
 
@@ -146,6 +157,7 @@ MainComponent::~MainComponent()
     inputPort = nullptr;
     juce__label = nullptr;
     filepathLabel = nullptr;
+    juce__label2 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -210,6 +222,10 @@ void MainComponent::buttonClicked (juce::Button* buttonThatWasClicked)
     //[/UserbuttonClicked_Post]
 }
 
+
+
+//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+
 void MainComponent::updateIpAndPort() {
 	juce::String port = inputPort->getText();
 	juce::String ip = inputIp->getText();
@@ -222,12 +238,9 @@ void MainComponent::updateIpAndPort() {
 	// if(port.length > 0) {
 		configState.setProperty(CONFIGPROPS::Port, port, nullptr);
 	// }
+	StatusLog::getInstance().log("updateIpAndPort, values are: " + ip + ":" + port);
 
 }
-
-
-
-//[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainComponent::valueTreePropertyChanged(juce::ValueTree& tree, const juce::Identifier& property)
 {
     if (property == CONFIGPROPS::FilePath) {
@@ -324,13 +337,13 @@ BEGIN_JUCER_METADATA
          constructorParams="" jucerComponentFile="AboutComponent.cpp"/>
   </TABBEDCOMPONENT>
   <TEXTEDITOR name="input_ip" id="69a2b7cb2cd5e197" memberName="inputIp" virtualName=""
-              explicitFocusOrder="0" pos="144 56 150 24" bkgcol="ff1f2427"
-              initialText="&lt;ip address&gt;" multiline="0" retKeyStartsLine="0"
-              readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
+              explicitFocusOrder="0" pos="240 56 136 24" bkgcol="ff1f2427"
+              initialText="" multiline="0" retKeyStartsLine="0" readonly="0"
+              scrollbars="1" caret="1" popupmenu="1"/>
   <TEXTEDITOR name="input_port" id="a7eca59a43135a0f" memberName="inputPort"
-              virtualName="" explicitFocusOrder="0" pos="304 56 150 24" bkgcol="ff1f2427"
-              initialText="&lt;port&gt;" multiline="0" retKeyStartsLine="0"
-              readonly="0" scrollbars="1" caret="1" popupmenu="1"/>
+              virtualName="" explicitFocusOrder="0" pos="383 56 62 24" bkgcol="ff1f2427"
+              initialText="" multiline="0" retKeyStartsLine="0" readonly="0"
+              scrollbars="1" caret="1" popupmenu="1"/>
   <LABEL name="new label" id="5fe7532ed811574e" memberName="juce__label"
          virtualName="" explicitFocusOrder="0" pos="16 16 296 32" bkgCol="ff829765"
          edTextCol="ff000000" edBkgCol="0" labelText="JMidiOscTrigger"
@@ -340,6 +353,11 @@ BEGIN_JUCER_METADATA
   <LABEL name="filepathLabel" id="5be5377816c4f9b9" memberName="filepathLabel"
          virtualName="" explicitFocusOrder="0" pos="16 84 576 24" edTextCol="ff000000"
          edBkgCol="0" labelText="no xml configuration file selected" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+  <LABEL name="new label" id="f8faf0b1870dd340" memberName="juce__label2"
+         virtualName="" explicitFocusOrder="0" pos="148 60 88 16" edTextCol="ff000000"
+         edBkgCol="0" labelText="custom IP/Port:" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
          fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
 </JUCER_COMPONENT>

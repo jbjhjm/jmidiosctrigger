@@ -62,26 +62,23 @@ bool XMLParser::loadXmlData(pugi::xml_document* doc)
 void XMLParser::loadXmlConfigurationData()
 {
 	auto& configState = Store::getState(STATES::Config);
-
-	auto x = countNodeChildren(xmlConfigNode, "");
+	// auto x = countNodeChildren(xmlConfigNode, "");
 	// logger.log("loadXmlConfigurationData: <config> node contains " + juce::String(x) + " children");
-
-	// auto& childIterator = xmlConfigNode.children();
 
 	for (pugi::xml_node node = xmlConfigNode.first_child(); node; node = node.next_sibling()) {
 		auto const& name = node.name();
 		if(strcmp(name, "IP") == 0) {
 			configState.setProperty(CONFIGPROPS::XML_IP, juce::String( node.attribute("value").as_string() ) , nullptr);
-			logger.log("Read XML Config: XML_IP = " + juce::String( node.attribute("value").as_string() ));
+			// logger.log("Read XML Config: XML_IP = " + juce::String( node.attribute("value").as_string() ));
 		} else if(strcmp(name, "Port") == 0) {
 			configState.setProperty(CONFIGPROPS::XML_Port, node.attribute("value").as_int() , nullptr );
-			logger.log("Read XML Config: Port = " + juce::String( node.attribute("value").as_int() ));
+			// logger.log("Read XML Config: Port = " + juce::String( node.attribute("value").as_int() ));
 		} else if(strcmp(name, "Filter_maxNote") == 0) {
 			configState.setProperty(CONFIGPROPS::FilterMaxNote, node.attribute("value").as_int() , nullptr );
-			logger.log("Read XML Config: Filter_maxNote = " + juce::String( node.attribute("value").as_int() ));
+			// logger.log("Read XML Config: Filter_maxNote = " + juce::String( node.attribute("value").as_int() ));
 		} else if(strcmp(name, "Filter_extraChannel") == 0) {
 			configState.setProperty(CONFIGPROPS::FilterExtraChannel, node.attribute("value").as_int() , nullptr );
-			logger.log("Read XML Config: FilterExtraChannel = " + juce::String( node.attribute("value").as_int() ));
+			// logger.log("Read XML Config: FilterExtraChannel = " + juce::String( node.attribute("value").as_int() ));
 		}
 	}
 }

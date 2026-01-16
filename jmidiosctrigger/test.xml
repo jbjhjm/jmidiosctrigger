@@ -3,7 +3,7 @@
 <jmididata>
   
   <config>
-	<IP value="127.0.0.1" />
+	<IP value="127.0.0.123" />
 	<Port value="5555" />
 	<Filter_maxNote value="16" />
 	<Filter_extraChannel value="10" />

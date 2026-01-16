@@ -18,6 +18,17 @@ void showConnectionErrorMessage (const juce::String& messageText)
         "OK");
 }
 
+bool isValidIPv4(const char *IPAddress)
+{
+   unsigned int a,b,c,d;
+   if(!sscanf(IPAddress,"%d.%d.%d.%d", &a, &b, &c, &d) == 4) return false;
+   return a <= 255 && b <= 255 && c <= 255 && d <= 255;
+}
+bool isValidPort(int port)
+{
+   return port > 0 && port <= 65535;
+}
+
 OSCHandler& OSCHandler::getInstance()
 {
 	static OSCHandler instance;
@@ -48,8 +59,9 @@ bool OSCHandler::connect() {
 		}
 	}
 	if(configState.hasProperty(CONFIGPROPS::IP)) {
+		// TODO: Not working yet
 		ipVar = &configState.getProperty(CONFIGPROPS::IP);
-		if(ipVar->isString()) {
+		if(ipVar->isString() && ipVar->toString() != "" ) {
 			ip = ipVar->toString();
 		}
 	}
@@ -61,14 +73,23 @@ bool OSCHandler::connect() {
 	}
 	if(configState.hasProperty(CONFIGPROPS::Port)) {
 		ipVar = &configState.getProperty(CONFIGPROPS::Port);
-		if(ipVar->isInt()) {
-			port = static_cast<int>(*ipVar);
+		if(ipVar->isString() && ipVar->toString() != "" ) {
+			port = ipVar->toString().getIntValue();
 		}
 	}
 
-	logger.log("fetched ip/port from GUI Inputs, values are: " + ip + ":" + juce::String(port));
-	showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
-	if (!sender.connect ("127.0.0.1", 9001)) { // [4]
+	if(!isValidIPv4(ip.getCharPointer())) {
+		logger.log("Invalid IP detected: " + ip);
+		return false;
+	}
+	if(!isValidPort(port)) {
+		logger.log("Invalid port detected: " + juce::String(port));
+		return false;
+	}
+
+	logger.log("Connecting to " + ip + ":" + juce::String(port) + "...");
+	if (!sender.connect (ip, port)) { // [4]
+		showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
 		return false;
 	}
 	return true;

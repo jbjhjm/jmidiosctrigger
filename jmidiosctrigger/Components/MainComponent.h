@@ -76,6 +76,7 @@ private:
     std::unique_ptr<juce::TextEditor> inputPort;
     std::unique_ptr<juce::Label> juce__label;
     std::unique_ptr<juce::Label> filepathLabel;
+    std::unique_ptr<juce::Label> juce__label2;
     juce::Image cachedImage_background_png_1;
 
 
