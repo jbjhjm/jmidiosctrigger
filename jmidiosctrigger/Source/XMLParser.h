@@ -45,24 +45,19 @@ public:
     XMLParser();
     ~XMLParser();
 
-    bool loadXmlData(pugi::xml_document* doc);
+    bool loadXmlData(pugi::xml_document& doc);
 	void loadXmlConfigurationData(pugi::xml_node configNode);
 	void cacheXmlMappings(pugi::xml_node mappingsNode);
     juce::String generateXmlDocumentation();
 
 	const OscInstruction findCachedMapping(int channel, int note);
-	pugi::xml_node findMappingNode(int channel, int note);
     int countNodeChildren(pugi::xml_node& node, const char * name);
-
-	bool XMLParser::findEntryforMidiEvent(juce::MidiMessage &inputInfo, pugi::xml_node &xmlEntry);
 
     StatusLog logger;// = StatusLog::getInstance();
 
-    pugi::xml_document* xmlDoc;
-    pugi::xml_node xmlMappingsNode;
+	juce::HashMap<int, OscInstruction> lookupMap;
     bool xmlReadyState = false;
 
-	juce::HashMap<int, OscInstruction> lookupMap;
 
 private:
     //==============================================================================

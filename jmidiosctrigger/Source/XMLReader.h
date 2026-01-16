@@ -37,7 +37,6 @@ public:
     XMLParser* parser;
 
     juce::Value xmlFilePath;
-    pugi::xml_document xmlDoc;
     juce::Value documentation;
 
 

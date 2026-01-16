@@ -11,7 +11,6 @@
 #include <JuceHeader.h>
 #include "XmlParser.h"
 #include "StatusLog.h"
-#include "../libraries/pugixml.hpp" 
 
 //==============================================================================
 
@@ -27,7 +26,6 @@ public:
 
 	bool connect();
 	bool disconnect();
-    bool sendOSC(const pugi::xml_node& xmlOSCNode, juce::MidiMessage& midiInput);
     bool sendOSC(const OscInstruction& instruction, juce::MidiMessage& midiInput);
 
 

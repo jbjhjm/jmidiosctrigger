@@ -32,7 +32,7 @@ juce::String cacheKeyToChannelAndKeyString(int cacheKey)
 }
 
 juce::String oscParamsToString(const juce::Array<OscParam> & oscParams) {
-	juce::String paramsString = "";
+	juce::String paramsString = " -- ";
 	for (const auto& param : oscParams) {
 		paramsString += "[" + param.type + "," + param.value + "] ";
 	}
@@ -41,7 +41,7 @@ juce::String oscParamsToString(const juce::Array<OscParam> & oscParams) {
 
 juce::String oscInstructionToString(const OscInstruction& instruction) {
 	auto paramsString = oscParamsToString(instruction.params);
-	return juce::String( instruction.command + " Params[" + juce::String(instruction.params.size()) + "]:" + paramsString);
+	return juce::String( instruction.command + paramsString);
 }
 
 
@@ -60,18 +60,15 @@ XMLParser::XMLParser():
 
 XMLParser::~XMLParser()
 {
-	// no need to destroy xmlDoc, it is the only pointer to document.
-	// when the pointer is destroyed or overwritten, old document will be closed.
 }
 
 
-bool XMLParser::loadXmlData(pugi::xml_document* doc)
+bool XMLParser::loadXmlData(pugi::xml_document& doc)
 {
 	xmlReadyState = false;
 	lookupMap.clear();
 
-	xmlDoc = doc;
-	auto xmlRootNode = xmlDoc->document_element();
+	auto xmlRootNode = doc.document_element();
 	if (!xmlRootNode) { DBG("Error: No XML root node found. "); return false; }
 	DBG("Debug: Selected root node " + juce::String(xmlRootNode.name()));
 
@@ -79,7 +76,7 @@ bool XMLParser::loadXmlData(pugi::xml_document* doc)
 	if (!xmlConfigNode) { logger.log("Error: No XML <config> node found. "); }
 	// logger.log("Found number of configs: " + juce::String(countNodeChildren(xmlConfigNode, "")));
 
-	xmlMappingsNode = xmlRootNode.child("mappings");
+	auto xmlMappingsNode = xmlRootNode.child("mappings");
 	if (!xmlMappingsNode) { logger.log("Error: No XML <mappings> node found. "); return false; }
 	// logger.log("Found number of mappings: " + juce::String(countNodeChildren(xmlMappingsNode, "mapping")));
 	DBG("Debug: Selected mappings group node " + juce::String(xmlMappingsNode.name()));
@@ -161,30 +158,6 @@ const OscInstruction XMLParser::findCachedMapping(int channel, int note)
 	}
 }
 
-pugi::xml_node XMLParser::findMappingNode(int channel, int note)
-{
-	// TODO: Pre-cache data for real time lookups
-	// std::unordered_set or std::unordered_map are typically the fastest for average-case O(1) lookup when you need to check existence or retrieve values by key.
-	// They use hashing, making them ideal for large datasets with frequent lookups, provided a good hash function is available.
-	pugi::xpath_variable_set vars;
-	vars.add("channel", pugi::xpath_value_type::xpath_type_number);
-	vars.add("note", pugi::xpath_value_type::xpath_type_number);
-	vars.set("channel", double(channel));
-	vars.set("note", double(note));
-	// TODO: instead of querying, a manual loop over children is likely more efficient
-	pugi::xpath_query midiMappingQuery("mapping[@channel=number($channel)][@key=number($note)]", &vars);
-	pugi::xpath_node targetNode = midiMappingQuery.evaluate_node(xmlMappingsNode);
-	return targetNode.node();
-}
-
-
-bool XMLParser::findEntryforMidiEvent(juce::MidiMessage& inputInfo, pugi::xml_node& xmlEntry)
-{
-	xmlEntry = findMappingNode(inputInfo.getChannel(), inputInfo.getNoteNumber());
-	const bool found = xmlEntry && xmlEntry.name() != "";
-	return found;
-}
-
 int XMLParser::countNodeChildren(pugi::xml_node& node, const char * name)
 {
 	if (juce::String(name).length() > 0)
@@ -201,7 +174,6 @@ int XMLParser::countNodeChildren(pugi::xml_node& node, const char * name)
 
 juce::String XMLParser::generateXmlDocumentation()
 {
-	if (!xmlMappingsNode) return "no configuration loaded, aborting doc generation";
 	//logger.log("Debug: Generate documentation");
 
 	juce::String doc = "";
@@ -220,7 +192,7 @@ juce::String XMLParser::generateXmlDocumentation()
 	for (const auto cacheKey : sortedCacheKeys) {
 		auto& channelAndKey = cacheKeyToChannelAndKeyString(cacheKey);
 		auto& instr = lookupMap[cacheKey];
-		doc += "<Mapping> " + channelAndKey + oscInstructionToString(instr) + "\n";
+		doc += "<Mapping> " + channelAndKey + " --> " + oscInstructionToString(instr) + "\n";
 	}
 
 	DBG("Successfully parsed file.");

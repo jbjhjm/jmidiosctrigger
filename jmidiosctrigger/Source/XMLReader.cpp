@@ -38,6 +38,7 @@ bool XMLReader::loadXmlFile(const juce::File& fi)
 
 	xmlFilePath.setValue(fi.getFullPathName());
 
+	pugi::xml_document xmlDoc;
 	pugi::xml_parse_result xmlReadSuccess = xmlDoc.load_file(fi.getFullPathName().toRawUTF8());
 
 	if (xmlReadSuccess == false) {
@@ -47,7 +48,7 @@ bool XMLReader::loadXmlFile(const juce::File& fi)
 	else 
 	{
 		logger.log("Successfully parsed file." ,1);
-		if (!parser->loadXmlData(&xmlDoc)) { 
+		if (!parser->loadXmlData(xmlDoc)) { 
 			return abortLoadXmlFile();
 		};
 
