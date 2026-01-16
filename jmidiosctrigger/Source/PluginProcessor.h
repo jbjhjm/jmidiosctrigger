@@ -68,12 +68,17 @@ public:
     bool readXmlFileAccordingToState();
     bool refresh();
 
+	bool initialized = false;
+
     StatusLog logger;
 
 
 
 private:
     //==============================================================================
+
+	int maxNote = 127;
+	int extraChannel = -1;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JMidiOscTriggerAudioProcessor)
 };

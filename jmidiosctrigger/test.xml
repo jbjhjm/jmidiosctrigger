@@ -3,25 +3,27 @@
 <jmididata>
   
   <config>
-	<IP value="127.0.0.123" />
-	<Port value="5555" />
+	<IP value="127.0.0.1" />
+	<Port value="4560" />
 	<Filter_maxNote value="16" />
 	<Filter_extraChannel value="10" />
   </config>
 
+  <!-- <mapping> -> <param> supports value replacement. use %f to send note velocity mapped to float in range 0.0-100.0 -->
+
   <mappings>
-    <mapping channel="1" key="000" command="tuner_on" />
-    <mapping channel="1" key="001" command="tuner_off" />
-    <mapping channel="1" key="002" command="ctrl1" />
-    <mapping channel="1" key="003" command="ctrl2" />
-    <mapping channel="1" key="009" command="lforeset" />
-    <mapping channel="1" key="010" command="taptempo" />
-    <mapping channel="2" key="000" command="tuner_on" />
-    <mapping channel="2" key="001" command="tuner_off" />
-    <mapping channel="2" key="002" command="ctrl1" />
-    <mapping channel="2" key="003" command="ctrl2" />
-    <mapping channel="2" key="009" command="lforeset" />
-    <mapping channel="2" key="010" command="taptempo" />
+    <mapping channel="1" key="000" command="/macro/100"  />
+    <mapping channel="1" key="001" command="/page/16" />
+    <mapping channel="1" key="002" command="/executor/202/go" />
+    <mapping channel="1" key="003" command="/executor/202/off" />
+    <mapping channel="1" key="004" command="/executor/3.106"><param type="f" value="0.5" /></mapping>
+    <mapping channel="1" key="005" command="/executor/3.106,ff,0.5,0.3" />
+    <mapping channel="1" key="006" command="/executor/3.106" ><param type="f" value="%f" /><param type="f" value="0.3" /></mapping>
+    <mapping channel="1" key="007" command="/executor/202/goto/4.2" />
+    <mapping channel="1" key="008" command="/page/main/executor/show_start/100" />
+    <mapping channel="1" key="009" command="/executor/202/goto/4.2"><param type="f" value="0.5" /></mapping>
+    <mapping channel="1" key="010" command="/cmd"><param type="s" value="Select Fixtures 1.1 thru 10.1" /></mapping>
+    <mapping channel="1" key="011" command="/executor/3.106"><param type="f" value="%f" /><param type="f" value="0.5" /></mapping>
   </mappings>
   
 </jmididata>

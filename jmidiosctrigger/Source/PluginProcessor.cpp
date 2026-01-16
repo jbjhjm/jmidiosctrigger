@@ -23,7 +23,6 @@ JMidiOscTriggerAudioProcessor::JMidiOscTriggerAudioProcessor()
 	logger (StatusLog::getInstance())
 #endif
 {
-	logger.log("Application started");
 
 }
 
@@ -147,22 +146,19 @@ void JMidiOscTriggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 		//logger.logMidiMessage(m, "processBlock");
         // processMidiInputMessage(m, midiOutput);
 
-		// efficient pre-check: only allow noteon events in certain region
+		// efficient pre-check: only allow noteon events & certain midi regions
 		if(!m.isNoteOn(true)) continue;
-		isMidiMessageInWatchedRange =  m.getNoteNumber() < 13;
+		if(m.getNoteNumber() > maxNote && m.getChannel() != extraChannel) continue;
 		
 		if(isMidiMessageInWatchedRange) {
 
-			// TODO: limit processing complexity by pre-scanning and filtering
 			midiMessageHasOscTarget = XMLReader::getInstance().parser->findEntryforMidiEvent(m, xmlEntry);
 
 			if(midiMessageHasOscTarget) {
 				logger.log("Found midiMessage with OSC target [channel=" + juce::String(m.getChannel()) +"]" + " [key=" + juce::String(m.getNoteNumber())+"]");
 				
 				midiMessages.clear(time,0);
-
 				OSCHandler::getInstance().sendOSC(xmlEntry, m);
-
 				continue;
 			}
 		}
@@ -213,6 +209,9 @@ void JMidiOscTriggerAudioProcessor::setStateInformation(const void* data, int si
 
 	// TODO: instead of triggering manual file updates from multiple points,
 	// a State listener should be added to react accordingly and trigger XML reload.
+	
+	initialized = true;
+	logger.log("initialized State Information.");
 
 	refresh();
 
@@ -230,16 +229,31 @@ bool JMidiOscTriggerAudioProcessor::readXmlFileAccordingToState()
 		return XMLReader::getInstance().loadXmlFile(filePath.toString());
     }
     else {
-        logger.log("loaded State Information - no config file path found.");
+        // logger.log("loaded State Information - no config file path found.");
 		return false;
     }
 }
 
 bool JMidiOscTriggerAudioProcessor::refresh()
 {
+	if(!initialized) return false;
+	
 	OSCHandler::getInstance().disconnect();
     readXmlFileAccordingToState();
-	// TODO: refresh ip/port if needed
+
+	auto& configState = Store::getState(STATES::Config);
+
+	maxNote = 127;
+	if(configState.hasProperty(CONFIGPROPS::FilterMaxNote)) {
+		auto* var = &configState.getProperty(CONFIGPROPS::FilterMaxNote);
+		if(var->isInt()) maxNote = static_cast<int>(*var);
+	}
+
+	extraChannel = -1;
+	if(configState.hasProperty(CONFIGPROPS::FilterExtraChannel)) {
+		auto* var = &configState.getProperty(CONFIGPROPS::FilterExtraChannel);
+		if(var->isInt()) extraChannel = static_cast<int>(*var);
+	}
 
 	OSCHandler::getInstance().connect();
 	return true;

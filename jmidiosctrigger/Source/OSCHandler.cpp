@@ -90,6 +90,7 @@ bool OSCHandler::connect() {
 	logger.log("Connecting to " + ip + ":" + juce::String(port) + "...");
 	if (!sender.connect (ip, port)) { // [4]
 		showConnectionErrorMessage ("Error: could not connect to UDP port 9001.");
+		// TODO: Possible to implement a fallback?
 		return false;
 	}
 	return true;
@@ -102,15 +103,33 @@ bool OSCHandler::disconnect() {
 bool OSCHandler::sendOSC(const pugi::xml_node& xmlOSCNode, juce::MidiMessage& midiInput) {
 	juce::String command = juce::String (xmlOSCNode.attribute("command").as_string());
     int velocity = midiInput.getVelocity();
-	float percentage = velocity / 255.0;
+	float floatVelocity = velocity / 2.550; // MA expects float in range of 0-100
+	juce::OSCMessage msg(command);
+
+	juce::String paramsString = "";
+	for (pugi::xml_node node = xmlOSCNode.child("param"); node; node = node.next_sibling("param")) {
+		auto type = juce::String( node.attribute("type").as_string() );
+		auto valueStr = juce::String( node.attribute("value").as_string() );
+
+		// in case the param value contains %v, replace it
+		valueStr = String::formatted(valueStr, floatVelocity);
+
+		if(type == "f") {
+			msg.addFloat32(valueStr.getFloatValue());
+			paramsString += "[f," + juce::String(valueStr.getFloatValue()) + "] ";
+		} else if (type == "s") {
+			msg.addString(valueStr);
+			paramsString += "[s," + valueStr + "] ";
+		} else {
+			logger.log("ERR: Unsupported param type " + type);
+			return false;
+		}
+	}
 	
 	logger.log(">>> Matched NoteOn [channel=" + juce::String(midiInput.getChannel()) +"]"
 		+ " [key=" + juce::String(midiInput.getNoteNumber())+"]"
-		+ " --> OSC: " + command
+		+ " --> OSC: " + command + paramsString
 	, 0);
-
-	juce::OSCMessage msg("/juce/rotaryknob");
-	msg.addFloat32(percentage);
 
 	if (!sender.send (msg)) {
         showConnectionErrorMessage ("Error: could not send OSC message.");
