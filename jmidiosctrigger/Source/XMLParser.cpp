@@ -39,7 +39,7 @@ juce::String oscParamsToString(const juce::Array<OscParam> & oscParams) {
 	return paramsString;
 }
 
-juce::String oscInstructionToString(const OscInstruction& instruction) {
+juce::String oscInstructionToString(const Command& instruction) {
 	auto paramsString = oscParamsToString(instruction.params);
 	return juce::String( instruction.command + paramsString);
 }
@@ -67,6 +67,8 @@ bool XMLParser::loadXmlData(pugi::xml_document& doc)
 {
 	xmlReadyState = false;
 	lookupMap.clear();
+	VarHandler::getInstance().resetVariables();
+	VarHandler::getInstance().resetDefaultVariables();
 
 	auto xmlRootNode = doc.document_element();
 	if (!xmlRootNode) { DBG("Error: No XML root node found. "); return false; }
@@ -75,6 +77,9 @@ bool XMLParser::loadXmlData(pugi::xml_document& doc)
 	auto xmlConfigNode = xmlRootNode.child("config");
 	if (!xmlConfigNode) { logger.log("Error: No XML <config> node found. "); }
 	// logger.log("Found number of configs: " + juce::String(countNodeChildren(xmlConfigNode, "")));
+
+	auto xmlVarsNode = xmlRootNode.child("values");
+	if(xmlVarsNode) VarHandler::getInstance().readXmlVariables(xmlVarsNode);
 
 	auto xmlMappingsNode = xmlRootNode.child("mappings");
 	if (!xmlMappingsNode) { logger.log("Error: No XML <mappings> node found. "); return false; }
@@ -131,15 +136,17 @@ void XMLParser::cacheXmlMappings(pugi::xml_node mappingsNode)
 		cacheKey = getCacheKey(channel, key);
 		// logger.log("created cacheKey " + juce::String(channel) + "." + juce::String(key) + " = " + juce::String(cacheKey) + cacheKeyToChannelAndKeyString(cacheKey));
 
-		OscInstruction instruction;
+		Command instruction;
 		instruction.command = juce::String( node.attribute("command").as_string() );
 
 		for (pugi::xml_node param = node.child("param"); param; param = param.next_sibling("param")) {
 			auto type = juce::String( param.attribute("type").as_string() );
 			auto value = juce::String( param.attribute("value").as_string() );
+			auto multiplierNode = param.attribute("multiplier");
+			auto multiplier = multiplierNode ? multiplierNode.as_float() : (float)1.0;
 
 			instruction.params.add(
-				OscParam { type, value }
+				OscParam { type, value, multiplier }
 			);
 		}
 		lookupMap.set(cacheKey, instruction);
@@ -148,13 +155,13 @@ void XMLParser::cacheXmlMappings(pugi::xml_node mappingsNode)
 	logger.log("Created Mappings cache containing " + juce::String(lookupMap.size()) + " entries.");
 }
 
-const OscInstruction XMLParser::findCachedMapping(int channel, int note)
+const Command XMLParser::findCachedMapping(int channel, int note)
 {
 	auto cacheKey = getCacheKey(channel, note);
 	if(lookupMap.contains(cacheKey)) {
 		return lookupMap[cacheKey];
 	} else {
-		return OscInstruction {""};
+		return Command {""};
 	}
 }
 
@@ -184,7 +191,7 @@ juce::String XMLParser::generateXmlDocumentation()
 	// lookupMap is unsorted, build an ordered list of contained keys
 	LookupMapKeyComparator comparator;
 	juce::Array<int> sortedCacheKeys;
-	for (juce::HashMap<int, OscInstruction>::Iterator entry(lookupMap); entry.next();) {
+	for (juce::HashMap<int, Command>::Iterator entry(lookupMap); entry.next();) {
 		sortedCacheKeys.add(entry.getKey());
 	}
 	sortedCacheKeys.sort(comparator);

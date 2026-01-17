@@ -145,9 +145,13 @@ void JMidiOscTriggerAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 		
 		if(isMidiMessageInWatchedRange) {
 
-			const OscInstruction& instruction = XMLReader::getInstance().parser->findCachedMapping(m.getChannel(), m.getNoteNumber());
+			const Command& instruction = XMLReader::getInstance().parser->findCachedMapping(m.getChannel(), m.getNoteNumber());
 			// instruction.command will be empty if no match is found.
-			if(instruction.command != "") {
+			if(instruction.command[0] == '~') {
+				midiMessages.clear(time,0);
+				VarHandler::getInstance().command(instruction, m);
+				continue;
+			} else if(instruction.command != "") {
 				// logger.log("Found Instruction:" + juce::String(instruction.params.size()) +" "+ oscInstructionToString(instruction));
 				midiMessages.clear(time,0);
 				OSCHandler::getInstance().sendOSC(instruction, m);

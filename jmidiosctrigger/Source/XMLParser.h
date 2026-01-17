@@ -9,20 +9,14 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Command.h"
 #include "StatusLog.h"
+#include "VarHandler.h"
 #include "../libraries/pugixml.hpp" 
 
 //==============================================================================
 
-struct OscParam {
-	juce::String type;
-	juce::String value;
-};
 
-struct OscInstruction {
-	juce::String command;
-	juce::Array<OscParam> params;
-};
 
 struct LookupMapKeyComparator
 {
@@ -33,7 +27,7 @@ struct LookupMapKeyComparator
 };
 
 juce::String oscParamsToString(const juce::Array<OscParam> & oscParams);
-juce::String oscInstructionToString(const OscInstruction& instruction);
+juce::String oscInstructionToString(const Command& instruction);
 
 /**
 */
@@ -46,20 +40,20 @@ public:
     ~XMLParser();
 
     bool loadXmlData(pugi::xml_document& doc);
-	void loadXmlConfigurationData(pugi::xml_node configNode);
-	void cacheXmlMappings(pugi::xml_node mappingsNode);
     juce::String generateXmlDocumentation();
-
-	const OscInstruction findCachedMapping(int channel, int note);
+	
+	const Command findCachedMapping(int channel, int note);
     int countNodeChildren(pugi::xml_node& node, const char * name);
-
-    StatusLog logger;// = StatusLog::getInstance();
-
-	juce::HashMap<int, OscInstruction> lookupMap;
+	
+	
     bool xmlReadyState = false;
-
-
+	
+	
 private:
     //==============================================================================
+	void loadXmlConfigurationData(pugi::xml_node configNode);
+	void cacheXmlMappings(pugi::xml_node mappingsNode);
+    StatusLog logger;// = StatusLog::getInstance();
+	juce::HashMap<int, Command> lookupMap;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(XMLParser)
 };

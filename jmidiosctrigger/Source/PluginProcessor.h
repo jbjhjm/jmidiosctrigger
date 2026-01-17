@@ -13,6 +13,7 @@
 #include "../libraries/pugixml.hpp" 
 #include "StatusLog.h"
 #include "OSCHandler.h"
+#include "Command.h"
 
 //==============================================================================
 

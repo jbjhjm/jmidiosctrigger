@@ -203,6 +203,7 @@
     <ClCompile Include="..\..\Components\AboutComponent.cpp"/>
     <ClCompile Include="..\..\Components\MainComponent.cpp"/>
     <ClCompile Include="..\..\libraries\pugixml.cpp"/>
+    <ClCompile Include="..\..\Source\VarHandler.cpp"/>
     <ClCompile Include="..\..\Source\FileUtils.cpp"/>
     <ClCompile Include="..\..\Source\OSCHandler.cpp"/>
     <ClCompile Include="..\..\Source\XMLParser.cpp"/>
@@ -2419,6 +2420,8 @@
     <ClInclude Include="..\..\Components\MainComponent.h"/>
     <ClInclude Include="..\..\libraries\pugiconfig.hpp"/>
     <ClInclude Include="..\..\libraries\pugixml.hpp"/>
+    <ClInclude Include="..\..\Source\Command.h"/>
+    <ClInclude Include="..\..\Source\VarHandler.h"/>
     <ClInclude Include="..\..\Source\Constants.h"/>
     <ClInclude Include="..\..\Source\FileUtils.h"/>
     <ClInclude Include="..\..\Source\Store.h"/>

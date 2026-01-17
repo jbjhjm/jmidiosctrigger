@@ -116,24 +116,33 @@ bool OSCHandler::disconnect() {
 	return sender.disconnect();
 }
 
-bool OSCHandler::sendOSC(const OscInstruction& instruction, juce::MidiMessage& midiInput) {
+bool OSCHandler::sendOSC(const Command& instruction, juce::MidiMessage& midiInput) {
 
 	// standard OSC does not allow whitespaces in address and OSCSender checks for conforming address.
 	// so we need to replace whitespaces and convert back in target application if needed.
 	auto command = instruction.command.replaceCharacter(' ','~');
 
-    int velocity = midiInput.getVelocity();
-	float floatVelocity = velocity / 2.550; // MA expects float in range of 0-100
+	float floatVelocity = midiInput.getFloatVelocity() * 100.0; // MA expects float in range of 0-100
 	juce::OSCMessage msg(command);
 
 	for (const auto& param : instruction.params) {
-		// in case the param value contains %v, replace it
-		auto valueStr = juce::String::formatted(param.value, floatVelocity);
-
+		// in case the param value is $xxx
+		
 		if(param.type == "f") {
-			msg.addFloat32(valueStr.getFloatValue());
+			if(param.value.startsWithChar('$')) {
+				float fval = 0.0;
+				if(param.value == "$velocity") {
+					fval = floatVelocity;
+				} else {
+					auto val = VarHandler::getInstance().getVariable(param.value.substring(1));
+					if(val.isDouble()) fval = (float) val;
+				}
+				msg.addFloat32(fval * param.multiplier);
+			} else {
+				msg.addFloat32(param.value.getFloatValue());
+			}
 		} else if (param.type == "s") {
-			msg.addString(valueStr);
+			msg.addString(param.value);
 		} else {
 			logger.log("ERR: Unsupported param type " + param.type);
 			return false;

@@ -607,6 +607,9 @@
     <ClCompile Include="..\..\libraries\pugixml.cpp">
       <Filter>jmidiosctrigger\Libraries</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\VarHandler.cpp">
+      <Filter>jmidiosctrigger\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\FileUtils.cpp">
       <Filter>jmidiosctrigger\Source</Filter>
     </ClCompile>
@@ -3008,6 +3011,12 @@
     </ClInclude>
     <ClInclude Include="..\..\libraries\pugixml.hpp">
       <Filter>jmidiosctrigger\Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Command.h">
+      <Filter>jmidiosctrigger\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\VarHandler.h">
+      <Filter>jmidiosctrigger\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Constants.h">
       <Filter>jmidiosctrigger\Source</Filter>

@@ -30,6 +30,9 @@
       <FILE id="oR3TmD" name="pugixml.hpp" compile="0" resource="0" file="libraries/pugixml.hpp"/>
     </GROUP>
     <GROUP id="{EDB187E8-38F1-489B-090F-4DB0504739F2}" name="Source">
+      <FILE id="LHTE8f" name="Command.h" compile="0" resource="0" file="Source/Command.h"/>
+      <FILE id="TGKS4r" name="VarHandler.cpp" compile="1" resource="0" file="Source/VarHandler.cpp"/>
+      <FILE id="rYxTPd" name="VarHandler.h" compile="0" resource="0" file="Source/VarHandler.h"/>
       <FILE id="GGp3lh" name="Constants.h" compile="0" resource="0" file="Source/Constants.h"/>
       <FILE id="kwC2Oi" name="FileUtils.cpp" compile="1" resource="0" file="Source/FileUtils.cpp"/>
       <FILE id="rwSHP4" name="FileUtils.h" compile="0" resource="0" file="Source/FileUtils.h"/>
