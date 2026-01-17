@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "Command.h"
+#include "FileUtils.h"
 #include "StatusLog.h"
 #include "VarHandler.h"
 #include "../libraries/pugixml.hpp" 
@@ -43,7 +44,6 @@ public:
     juce::String generateXmlDocumentation();
 	
 	const Command findCachedMapping(int channel, int note);
-    int countNodeChildren(pugi::xml_node& node, const char * name);
 	
 	
     bool xmlReadyState = false;

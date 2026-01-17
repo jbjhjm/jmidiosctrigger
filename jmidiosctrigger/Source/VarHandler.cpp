@@ -44,8 +44,8 @@ VarHandler::~VarHandler()
 void VarHandler::readXmlVariables(pugi::xml_node configNode)
 {
 	auto& configState = Store::getState(STATES::Config);
-	// auto x = countNodeChildren(configNode, "");
-	// logger.log("loadXmlConfigurationData: <config> node contains " + juce::String(x) + " children");
+	auto x = FileUtils::countNodeChildren(configNode, "");
+	logger.log("readXmlVariables: <variables> contains " + juce::String(x) + " children");
 
 	juce::String name;
 	juce::String type;
@@ -55,8 +55,9 @@ void VarHandler::readXmlVariables(pugi::xml_node configNode)
 		type = juce::String(node.attribute("type").as_string());
 		juce::var value;
 		if(type == "f") {
-			value = node.attribute("default").as_float();
+			value = node.attribute("default").as_double();
 		}
+		// logger.log("Default var: "+name+"="+juce::String((double)value));
 		variableDefaults.set(name,value);
 	}
 }
@@ -70,13 +71,16 @@ void VarHandler::resetVariables()
 	logger.log("Reset dynamic vars");
 }
 
-const juce::var& VarHandler::getVariable(juce::String name)
+const juce::var VarHandler::getVariable(juce::String name)
 {
 	if(variableAssignments.contains(name)) {
+		// logger.log("Found var assignment for "+name);
 		return variableAssignments[name];
 	} else if(variableDefaults.contains(name)) {
+		// logger.log("Found var default for "+name+": "+juce::String((float)variableDefaults[name]));
 		return variableDefaults[name];
 	} else {
+		// logger.log("Found no var for "+name);
 		juce::var emptyVal;
 		return emptyVal;
 	}

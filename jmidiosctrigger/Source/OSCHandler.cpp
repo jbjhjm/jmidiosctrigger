@@ -134,7 +134,7 @@ bool OSCHandler::sendOSC(const Command& instruction, juce::MidiMessage& midiInpu
 				if(param.value == "$velocity") {
 					fval = floatVelocity;
 				} else {
-					auto val = VarHandler::getInstance().getVariable(param.value.substring(1));
+					auto& val = VarHandler::getInstance().getVariable(param.value.substring(1));
 					if(val.isDouble()) fval = (float) val;
 				}
 				msg.addFloat32(fval * param.multiplier);

@@ -76,14 +76,18 @@ bool XMLParser::loadXmlData(pugi::xml_document& doc)
 
 	auto xmlConfigNode = xmlRootNode.child("config");
 	if (!xmlConfigNode) { logger.log("Error: No XML <config> node found. "); }
-	// logger.log("Found number of configs: " + juce::String(countNodeChildren(xmlConfigNode, "")));
+	// logger.log("Found number of configs: " + juce::String(FileUtils::countNodeChildren(xmlConfigNode, "")));
 
-	auto xmlVarsNode = xmlRootNode.child("values");
-	if(xmlVarsNode) VarHandler::getInstance().readXmlVariables(xmlVarsNode);
+	auto xmlVarsNode = xmlRootNode.child("variables");
+	if(xmlVarsNode) {
+		VarHandler::getInstance().readXmlVariables(xmlVarsNode);
+	} else {
+		logger.log("Found no xml <variables> node.");
+	}
 
 	auto xmlMappingsNode = xmlRootNode.child("mappings");
 	if (!xmlMappingsNode) { logger.log("Error: No XML <mappings> node found. "); return false; }
-	// logger.log("Found number of mappings: " + juce::String(countNodeChildren(xmlMappingsNode, "mapping")));
+	// logger.log("Found number of mappings: " + juce::String(FileUtils::countNodeChildren(xmlMappingsNode, "mapping")));
 	DBG("Debug: Selected mappings group node " + juce::String(xmlMappingsNode.name()));
 
 	// for (pugi::xml_node child = xmlConfigNode.first_child(); child; child = child.next_sibling()) {
@@ -99,7 +103,7 @@ bool XMLParser::loadXmlData(pugi::xml_document& doc)
 void XMLParser::loadXmlConfigurationData(pugi::xml_node configNode)
 {
 	auto& configState = Store::getState(STATES::Config);
-	// auto x = countNodeChildren(configNode, "");
+	// auto x = FileUtils::countNodeChildren(configNode, "");
 	// logger.log("loadXmlConfigurationData: <config> node contains " + juce::String(x) + " children");
 
 	for (pugi::xml_node node = configNode.first_child(); node; node = node.next_sibling()) {
@@ -162,20 +166,6 @@ const Command XMLParser::findCachedMapping(int channel, int note)
 		return lookupMap[cacheKey];
 	} else {
 		return Command {""};
-	}
-}
-
-int XMLParser::countNodeChildren(pugi::xml_node& node, const char * name)
-{
-	if (juce::String(name).length() > 0)
-	{
-		auto& childIterator = node.children(name);
-		return std::distance(childIterator.begin(), childIterator.end());
-	}
-	else
-	{
-		auto& childIterator = node.children();
-		return std::distance(childIterator.begin(), childIterator.end());
 	}
 }
 

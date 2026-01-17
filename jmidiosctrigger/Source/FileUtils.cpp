@@ -39,4 +39,20 @@ namespace FileUtils {
 		}
 	}
 
+	
+	int countNodeChildren(pugi::xml_node& node, const char * name)
+	{
+		if (juce::String(name).length() > 0)
+		{
+			auto& childIterator = node.children(name);
+			return std::distance(childIterator.begin(), childIterator.end());
+		}
+		else
+		{
+			auto& childIterator = node.children();
+			return std::distance(childIterator.begin(), childIterator.end());
+		}
+	}
+
+
 }

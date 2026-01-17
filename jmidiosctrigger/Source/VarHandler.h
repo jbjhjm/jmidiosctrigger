@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "StatusLog.h"
 #include "Command.h"
+#include "FileUtils.h"
 #include "../libraries/pugixml.hpp" 
 
 //==============================================================================
@@ -29,7 +30,7 @@ public:
 	void readXmlVariables(pugi::xml_node configNode);
 	void resetVariables();
 	void resetDefaultVariables();
-	const juce::var& getVariable(juce::String name);
+	const juce::var getVariable(juce::String name);
 	void setVariable(juce::String name, float value);
 	bool command(const Command& instruction, juce::MidiMessage& midiInput);
 

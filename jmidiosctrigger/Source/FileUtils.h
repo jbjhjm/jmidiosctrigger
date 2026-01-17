@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "../libraries/pugixml.hpp" 
 
 namespace FileUtils {
 
@@ -18,4 +19,5 @@ namespace FileUtils {
 
     juce::String solveRelativeFilePath(const juce::String& path);
 
+	int countNodeChildren(pugi::xml_node& node, const char * name);
 }
