@@ -69,8 +69,8 @@
     <mapping channel="4" key="005" name="                   " command="/fader/4.5"><param type="f" value="$velocity" /></mapping>
     <mapping channel="4" key="006" name="                   " command="/fader/4.6"><param type="f" value="$velocity" /></mapping>
     <mapping channel="4" key="007" name="                   " command="/fader/4.7"><param type="f" value="$velocity" /></mapping>
-    <mapping channel="4" key="008" name="Fade-in Speed      " command="/fadeInSpeed/4"><param type="f" value="$velocity" /></mapping>
-    <mapping channel="4" key="009" name="Fade-out Speed     " command="/fadeOutSpeed/4"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="008" name="Fade-in Speed      " command="/lua"><param type="s" value="sector.setFlashFadeIn('jbmh',$velocity)" /></mapping>
+    <mapping channel="4" key="009" name="Fade-out Speed     " command="/lua"><param type="s" value="sector.setFlashFadeIn('jbmh',$velocity)" /></mapping>
     <mapping channel="4" key="010" name="Transition         " command="~SetValue/jbmhTransitionTime"></mapping>
 
   </mappings>

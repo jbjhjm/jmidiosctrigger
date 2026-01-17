@@ -265,7 +265,7 @@ function plugin.process_message(addressData,parsedValues)
 		return
 	end
 
-	-- /cmd/<data> or /cmd + string-value
+	-- /cmd + string-value
 	if addressSegments[1]=='cmd' then
 		local cmd=parsedValues[1]
 		if cmd then
@@ -273,6 +273,17 @@ function plugin.process_message(addressData,parsedValues)
 			runCommand(cmd)
 		else
 			unsupportedCmd('No command to execute was passed')
+		end
+		return
+
+	-- /lua + string-value
+	elseif addressSegments[1]=='lua' then
+		local cmd=parsedValues[1]
+		if cmd then
+			-- alert("Execute LUA: "..parsedValues[1])
+			runCommand("LUA \""..cmd.."\"")
+		else
+			unsupportedCmd('No lua to execute was passed')
 		end
 		return
 

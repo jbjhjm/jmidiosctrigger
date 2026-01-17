@@ -45,7 +45,7 @@ juce::String replaceVarsInString(const juce::String& input, float velocity)
 	{
 		out += juce::String(match.prefix());
 		const auto varName = juce::String(match.str()).substring(1);
-		if(varName == "$velocity") {
+		if(varName == "velocity") {
 			out += juce::String(velocity);
 		} else {
 			const auto& var = varHandler.getVariable(varName);
