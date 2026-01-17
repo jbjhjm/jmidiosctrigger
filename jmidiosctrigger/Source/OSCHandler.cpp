@@ -29,6 +29,45 @@ bool isValidPort(int port)
    return port > 0 && port <= 65535;
 }
 
+juce::String replaceVarsInString(const juce::String& input, float velocity)
+{
+	auto& varHandler = VarHandler::getInstance();
+	auto& logger = StatusLog::getInstance();
+	const auto stdString = input.toStdString();
+	auto itr = stdString.begin();
+	auto end = stdString.end();
+	// StatusLog::getInstance().log("searching vars in: "+juce::String(stdString));
+
+	std::regex pattern("\\$\\w+");
+	juce::String out;
+
+	for (std::smatch match; std::regex_search(itr, end, match, pattern); itr = match[0].second)
+	{
+		out += juce::String(match.prefix());
+		const auto varName = juce::String(match.str()).substring(1);
+		if(varName == "$velocity") {
+			out += juce::String(velocity);
+		} else {
+			const auto& var = varHandler.getVariable(varName);
+			if(var.isDouble()) {
+				out += juce::String((float)var);
+			} else if(var.isString()) {
+				out += var.toString();
+			} else {
+				logger.log("WARN: could not find replacement value for " + varName);
+			}
+		}
+		itr += match.position() + match.length();
+	}
+	
+	std::string rest(itr, end);
+	out += juce::String(rest);
+
+	// StatusLog::getInstance().log("replaced vars, result: "+out);
+
+	return out;
+}
+
 OSCHandler& OSCHandler::getInstance()
 {
 	static OSCHandler instance;
@@ -130,19 +169,23 @@ bool OSCHandler::sendOSC(const Command& instruction, juce::MidiMessage& midiInpu
 		
 		if(param.type == "f") {
 			if(param.value.startsWithChar('$')) {
-				float fval = 0.0;
 				if(param.value == "$velocity") {
-					fval = floatVelocity;
+					msg.addFloat32(floatVelocity * param.multiplier);
 				} else {
 					auto& val = VarHandler::getInstance().getVariable(param.value.substring(1));
-					if(val.isDouble()) fval = (float) val;
+					if(val.isDouble()) {
+						msg.addFloat32((float) val * param.multiplier);
+					} else {
+						logger.log("Error: tried to assign a non-numeric variable to float osc param.");
+					}
 				}
-				msg.addFloat32(fval * param.multiplier);
 			} else {
 				msg.addFloat32(param.value.getFloatValue());
 			}
 		} else if (param.type == "s") {
-			msg.addString(param.value);
+			auto const parsed = replaceVarsInString(param.value, floatVelocity);
+			logger.log("Parsed String: "+parsed);
+			msg.addString(parsed);
 		} else {
 			logger.log("ERR: Unsupported param type " + param.type);
 			return false;

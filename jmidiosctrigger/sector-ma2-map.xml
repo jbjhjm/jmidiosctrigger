@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<jmididata>
+  
+  <config>
+	<IP value="127.0.0.1" />
+	<Port value="4560" />
+	<PortFallback value="4567" />
+	<Filter_maxNote value="12" />
+	<Filter_extraChannel value="1" />
+  </config>
+  
+  <variables>
+	<var name="globalTransitionTime" type="f" default="1.0" />
+	<var name="jbmhTransitionTime" type="f" default="0.1" />
+  </variables>
+
+  <!-- all variables will have a range of 0-100.0 - use param[multiplier] to map their range if needed.  -->
+
+  <mappings>
+  	<!-- Channel 1 = Song executors  -->
+    <mapping channel="1" key="001" command="/fader/1"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="002" command="/fader/2"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="003" command="/fader/3"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="004" command="/fader/4"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="005" command="/fader/5"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="006" command="/fader/6"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="007" command="/fader/7"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="008" command="/fader/8"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="009" command="/fader/9"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="1" key="010" command="/fader/10"><param type="f" value="$velocity" /></mapping>
+
+	<!-- Song selection can be done by assigning commands to midi remote inputs. Which is more efficient than using OSC to select these. -->
+
+
+  	<!-- Channel 2 = Globals  -->
+    <mapping channel="2" key="000" name="Reset Values       " command="~Reset"></mapping>
+    <mapping channel="2" key="001" name="Transition         " command="~SetValue/globalTransitionTime"></mapping>
+    <mapping channel="2" key="002" name="Color Speed Master " command="/fader/1.2"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="003" name="PT Speed Master    " command="/fader/1.3"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="004" name="FX Speed Master    " command="/fader/1.4"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="005" name="Strobe Speed       " command="/fader/1.4"><param type="f" value="$velocity" /><param type="f" value="$globalTransitionTime" multiplier="0.1" /></mapping>
+    <mapping channel="2" key="006" name="                   " command="/fader/1.6"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="007" name="                   " command="/fader/1.7"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="008" name="                   " command="/fader/1.8"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="009" name="                   " command="/fader/1.9"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="010" name="                   " command="/fader/1.10"><param type="f" value="$velocity" /></mapping>
+	<!-- 12-47 reserved for color flashes -->
+    <mapping channel="2" key="048" name="Global Exec #48    " command="/fader/1.48"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="049" name="Global Exec #49    " command="/fader/1.49"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="050" name="Global Exec #50    " command="/fader/1.50"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="051" name="Global Exec #51    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="052" name="Global Exec #52    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="053" name="Global Exec #53    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="054" name="Global Exec #54    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="055" name="Global Exec #55    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="056" name="Global Exec #56    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="057" name="Global Exec #57    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="058" name="Global Exec #58    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="059" name="Global Exec #59    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="2" key="060" name="Global Exec #60    " command="/fader/1.51"><param type="f" value="$velocity" /></mapping>
+
+
+   	<!-- Channel 4 = JBMH  -->
+    <mapping channel="4" key="001" name="Dimmer Submaster   " command="/fader/4.1"><param type="f" value="$velocity" /><param type="f" value="$jbmhTransitionTime" multiplier="0.1" /></mapping>
+    <mapping channel="4" key="002" name="PT Speed Master    " command="/fader/4.2"><param type="f" value="$velocity" /><param type="f" value="$jbmhTransitionTime" multiplier="0.1" /></mapping>
+    <mapping channel="4" key="004" name="Strobe Speed       " command="/fader/4.3"><param type="f" value="$velocity" /><param type="f" value="$jbmhTransitionTime" multiplier="0.1" /></mapping>
+    <mapping channel="4" key="003" name="Zoom Speed         " command="/fader/4.4"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="005" name="                   " command="/fader/4.5"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="006" name="                   " command="/fader/4.6"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="007" name="                   " command="/fader/4.7"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="008" name="Fade-in Speed      " command="/fadeInSpeed/4"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="009" name="Fade-out Speed     " command="/fadeOutSpeed/4"><param type="f" value="$velocity" /></mapping>
+    <mapping channel="4" key="010" name="Transition         " command="~SetValue/jbmhTransitionTime"></mapping>
+
+  </mappings>
+  
+</jmididata>

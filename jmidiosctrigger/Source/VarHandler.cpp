@@ -56,6 +56,8 @@ void VarHandler::readXmlVariables(pugi::xml_node configNode)
 		juce::var value;
 		if(type == "f") {
 			value = node.attribute("default").as_double();
+		} else if(type == "s") {
+			value = juce::String(node.attribute("default").as_string());
 		}
 		// logger.log("Default var: "+name+"="+juce::String((double)value));
 		variableDefaults.set(name,value);
@@ -89,6 +91,14 @@ const juce::var VarHandler::getVariable(juce::String name)
 void VarHandler::setVariable(juce::String name, float value)
 {
 	juce::var variable = value;
+	if(!variableDefaults.contains(name)) {
+		logger.log("ERROR: tried to assign to unknown variable: "+name);
+		return;
+	}
+	if(!variableDefaults[name].isDouble()) {
+		logger.log("ERROR: tried to assign number to non-numeric variable: "+name);
+		return;
+	}
 	variableAssignments.set(name, variable);
 	logger.log("Assigned variable $" + name + "=" + juce::String(value));
 }

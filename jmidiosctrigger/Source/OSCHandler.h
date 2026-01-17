@@ -13,7 +13,7 @@
 #include "StatusLog.h"
 #include "Command.h"
 #include "VarHandler.h"
-
+#include <regex>
 //==============================================================================
 
 /**

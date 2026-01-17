@@ -5,7 +5,7 @@
 
 local messagePrefix = string.char(27)..'[35m'..'MA2OSC: '..string.char(27)..'[33m'
 local function alert(message)
-	gma.feedback(messagePrefix..message);
+	gma.feedback(messagePrefix..message)
 	gma.echo(messagePrefix..message)
 end
 
@@ -14,7 +14,7 @@ local function unsupportedCmd(extra)
 end
 
 local function runCommand(command)
-	command = command:gsub('[|\\^]','');
+	command = command:gsub('[|\\^]','')
 	return gma.cmd(command)
 end
 
@@ -267,11 +267,14 @@ function plugin.process_message(addressData,parsedValues)
 
 	-- /cmd/<data> or /cmd + string-value
 	if addressSegments[1]=='cmd' then
-		local cmd=addressSegments[2] or parsedValues[1]
+		local cmd=parsedValues[1]
 		if cmd then
+			-- alert("Execute cmd"..parsedValues[1])
 			runCommand(cmd)
-			return
+		else
+			unsupportedCmd('No command to execute was passed')
 		end
+		return
 
 	-- /macro/number or /macro + number-value
 	elseif addressSegments[1]=='macro' then
