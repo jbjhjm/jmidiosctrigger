@@ -1,0 +1,41 @@
+
+Script by:                                                               
+        .        .--._________   _...._    _________   _...._                    
+      .':        :__:\        :.'      '-. \        :.'      '-. .-.          .-  '2015
+     <  :        .--. \        .'```'.    '.\        .'```'.    '.\ \        / / 
+      : :        :  :  \      :       \     \\      :       \     \\ \      / /  
+      : : .'''-. :  :   :     :        :    : :     :        :    : \ \    / /   
+      : :/.'''. \:  :   :      \      /    .  :      \      /    .   \ \  / /    
+      :  /    : ::  :   :     :\`'-.-'   .'   :     :\`'-.-'   .'     \ `  /     
+      : :     : ::__:   :     : '-....-'`     :     : '-....-'`        \  /      
+      : :     : :      .'     '.             .'     '.                 / /       
+      : '.    : '.   '-----------'         '-----------'           :`-' /        
+      '---'   '---'                                                 '..'         
+                       ..::[ http://timelord-mtc.com/LUA ]::.. 
+                                                          
+
+
+File: lib_dump_lua_object.lua
+
+Category: Developer Tools 
+
+ 
+
+Purpose: Dump Lua objects (and their children) to the command line in a tree format.
+
+ 
+
+Usage:
+ 
+ Can be called from MA Command Line by...
+ 
+    LUA "dump_object()"              <- dump all objects
+
+     LUA "dump_object(gma)"         <- dumps the objects under gma
+
+
+
+1)  Extract both .xml and .lua files to the /gma2/plugins folder on a USB stick.
+2)  Open a Plugin window in MA2, Right-Click an empty slot, Click "Import", Select the stick.
+3)  Check below the banner for any user configurable options. 
+

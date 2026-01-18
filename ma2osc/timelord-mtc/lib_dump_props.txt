@@ -1,0 +1,38 @@
+
+Script by:                                                               
+        .        .--._________   _...._    _________   _...._                    
+      .':        :__:\        :.'      '-. \        :.'      '-. .-.          .-  '2015
+     <  :        .--. \        .'```'.    '.\        .'```'.    '.\ \        / / 
+      : :        :  :  \      :       \     \\      :       \     \\ \      / /  
+      : : .'''-. :  :   :     :        :    : :     :        :    : \ \    / /   
+      : :/.'''. \:  :   :      \      /    .  :      \      /    .   \ \  / /    
+      :  /    : ::  :   :     :\`'-.-'   .'   :     :\`'-.-'   .'     \ `  /     
+      : :     : ::__:   :     : '-....-'`     :     : '-....-'`        \  /      
+      : :     : :      .'     '.             .'     '.                 / /       
+      : '.    : '.   '-----------'         '-----------'           :`-' /        
+      '---'   '---'                                                 '..'         
+                       ..::[ http://timelord-mtc.com/LUA ]::.. 
+                                                          
+
+
+
+File: lib_dump_properties.lua
+
+
+Category: Developer Tools 
+
+ 
+
+Purpose: Dump Properties
+
+ 
+
+Usage:
+    LUA "dump_props(handle)"         
+                                
+
+
+1)  Extract both .xml and .lua files to the /gma2/plugins folder on a USB stick.
+2)  Open a Plugin window in MA2, Right-Click an empty slot, Click "Import", Select the stick.
+3)  Check below the banner for any user configurable options. 
+
