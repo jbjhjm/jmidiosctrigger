@@ -161,7 +161,9 @@ bool OSCHandler::sendOSC(const Command& instruction, juce::MidiMessage& midiInpu
 	// so we need to replace whitespaces and convert back in target application if needed.
 	auto command = instruction.command.replaceCharacter(' ','~');
 
-	float floatVelocity = midiInput.getFloatVelocity() * 100.0; // MA expects float in range of 0-100
+	// scale range so that velocity 100 is sent to MA2 as 100%.
+	// when using reapers keyboard, a velocity of 100 will trigger full 128, it seems.
+	float floatVelocity = std::fmin(midiInput.getFloatVelocity() * 127.0, 100.0); // MA expects float in range of 0-100
 	juce::OSCMessage msg(command);
 
 	for (const auto& param : instruction.params) {
@@ -170,6 +172,7 @@ bool OSCHandler::sendOSC(const Command& instruction, juce::MidiMessage& midiInpu
 		if(param.type == "f") {
 			if(param.value.startsWithChar('$')) {
 				if(param.value == "$velocity") {
+					logger.log("Velocity: " + juce::String(floatVelocity) + ", multiplier: " + juce::String(param.multiplier));
 					msg.addFloat32(floatVelocity * param.multiplier);
 				} else {
 					auto& val = VarHandler::getInstance().getVariable(param.value.substring(1));
