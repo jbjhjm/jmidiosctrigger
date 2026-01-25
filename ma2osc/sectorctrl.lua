@@ -7,41 +7,35 @@ local function alert(message)
 	gma.echo(messagePrefix..message)
 end
 
-local knownGroups={ 'jbmh', 'mic', 'suns', 'micpixel', 'sunpixel' }
-
-local function setFlashFade(group, isOut, fadeTime)
-	-- NOTE: fadeTime is not premultiplied! range 0-100!
-	if not group then
-		alert("no group param given")
-		return
-	end
-	if not fadeTime then
-		alert("no fadeTime param given")
-		return
-	end
-	local fadeTimeNum = tonumber(fadeTime)
-	if fadeTimeNum == nil then
-		alert("invalid fadeTime param value")
-		return
-	end
+local fadeGroups={ 'jbmh', 'mic', 'suns', 'micpixel', 'sunpixel', 'gl-colors' }
+local function setFadeTime(group, isOut, fadeTimeSec)
+	-- local fadeTimeNum = tonumber(fadeTime)
+	-- if fadeTimeNum == nil then
+	-- 	alert("invalid fadeTime param value")
+	-- 	return
+	-- end
 
 	local execRange = ""
 	if group == "jbmh" then
-		execRange = ""
+		execRange = isOut and "4.114 thru 4.117" or "4.106 thru 4.109"
 	elseif group == "mic" then
-		execRange = ""
+		execRange = isOut and "5.114 thru 5.117" or "5.106 thru 5.109"
 	elseif group == "suns" then
-		execRange = ""
+		execRange = isOut and "3.114 thru 3.117" or "3.106 thru 3.109"
+	elseif group == "gl-colors" then
+		execRange = "2.161 thru 2.185"
 	elseif group == "micpixel" then
-		execRange = ""
+		execRange = "5.131 thru 5.146"
 	elseif group == "sunpixel" then
-		execRange = ""
+		execRange = "3.131 thru 3.170"
+	else
+		alert('Unknown fadeTime group '..group)
 	end
 
 	if isOut then
-		gma.cmd("Assign Executor "..execRange.." /OffTime="..fadeTime)
+		gma.cmd("Assign Executor "..execRange.." /OffTime="..fadeTimeSec)
 	else
-		gma.cmd("Assign Executor "..execRange.." Cue 1 Fade "..fadeTime)
+		gma.cmd("Assign Executor "..execRange.." Cue 1 Fade "..fadeTimeSec)
 	end
 end
 
@@ -51,21 +45,26 @@ sector = {
 	strobeEffect = 'Effect 360 thru 361',
 	strobeWidthMs = 30,
 }
-function sector.setFlashFadeIn(group, fadeTime)
-	setFlashFade(group, "in", fadeTime)
+
+-- NOTE: fadeTime sent via OSC is not premultiplied! range 0-100!
+-- fadeTime - 1 because velocity min value is 1!
+function sector.setFadeInTime(group, fadeTime)
+	fadeTime = fadeTime and (fadeTime-1)*0.05 or 0.5
+	setFadeTime(group, false, fadeTime)
 end
-function sector.setFlashFadeOut(group, fadeTime)
-	setFlashFade(group, "out", fadeTime)
+function sector.setFadeOutTime(group, fadeTime)
+	fadeTime = fadeTime and (fadeTime-1)*0.05 or 0.6
+	setFadeTime(group, true, fadeTime)
 end
 function sector.resetFlashFading(group)
 	if not group then
-		for _, name in knownGroups do
-			setFlashFade(name, false, 0.5)
-			setFlashFade(name, true, 0.6)
+		for _, name in fadeGroups do
+			setFadeTime(name, false)
+			setFadeTime(name, true)
 		end
 	else
-		setFlashFade(group, false, 0.5)
-		setFlashFade(group, true, 0.6)
+		setFadeTime(group, false)
+		setFadeTime(group, true)
 	end
 end
 
