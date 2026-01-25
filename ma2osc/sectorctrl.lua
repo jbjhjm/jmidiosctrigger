@@ -8,6 +8,8 @@ local function alert(message)
 end
 
 local fadeGroups={ 'jbmh', 'mic', 'suns', 'micpixel', 'sunpixel', 'gl-colors' }
+local strobeGroups={ 'jbmh', 'mic', 'suns' }
+
 local function setFadeTime(group, isOut, fadeTimeSec)
 	-- local fadeTimeNum = tonumber(fadeTime)
 	-- if fadeTimeNum == nil then
@@ -120,9 +122,36 @@ function sector.setStrobeSpeed(multiplier)
 
 end
 
+function sector.setStrobeType(group, setWhite)
+	-- local fadeTimeNum = tonumber(fadeTime)
+	-- if fadeTimeNum == nil then
+	-- 	alert("invalid fadeTime param value")
+	-- 	return
+	-- end
+
+	local execRange = ""
+	if group == "jbmh" then
+		local startSeq = setWhite and 604 or 600
+		gma.cmd("Assign Sequence "..(startSeq+0).." At Executor 4.118")
+		gma.cmd("Assign Sequence "..(startSeq+1).." At Executor 4.119")
+		gma.cmd("Assign Sequence "..(startSeq+2).." At Executor 4.120")
+		gma.cmd("Assign Sequence "..(startSeq+3).." At Executor 4.121")
+	elseif group == "mic" then
+		local startSeq = setWhite and 609 or 608
+		gma.cmd("Assign Sequence "..(startSeq+0).." At Executor 5.118")
+	elseif group == "suns" then
+		-- ignore, suns have no colors
+	else
+		alert('Unknown strobeGroup '..group)
+	end
+
+end
+
 function sector.resetAll()
 	sector.setStrobeSpeed(4.0)
 	sector.resetFlashFading()
+	sector.setStrobeType('jbmh',false)
+	sector.setStrobeType('mic',false)
 end
 
 	-- dump_props(gma.show.getobj.handle("SpecialMaster 3.1"))
