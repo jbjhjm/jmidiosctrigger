@@ -1,7 +1,7 @@
 -- gma.cmd('Plugin "dump_object"')
 -- gma.cmd('Plugin "dump_props"')
 
-local messagePrefix = string.char(27)..'[35m'..'sector plugin: '..string.char(27)..'[33m'
+local messagePrefix = string.char(27)..'[35m'..'sectorctrl: '..string.char(27)..'[33m'
 local function alert(message)
 	gma.feedback(messagePrefix..message)
 	gma.echo(messagePrefix..message)
@@ -60,13 +60,13 @@ function sector.setFadeOutTime(group, fadeTime)
 end
 function sector.resetFlashFading(group)
 	if not group then
-		for _, name in fadeGroups do
-			setFadeTime(name, false)
-			setFadeTime(name, true)
+		for _, name in pairs(fadeGroups) do
+			sector.setFadeInTime(name)
+			sector.setFadeOutTime(name)
 		end
 	else
-		setFadeTime(group, false)
-		setFadeTime(group, true)
+		sector.setFadeInTime(group)
+		sector.setFadeOutTime(group)
 	end
 end
 
@@ -148,10 +148,14 @@ function sector.setStrobeType(group, setWhite)
 end
 
 function sector.resetAll()
+	alert('resetAll - strobeSpeed 4')
 	sector.setStrobeSpeed(4.0)
+	alert('resetAll - flash fade times')
 	sector.resetFlashFading()
+	alert('resetAll - strobe to dim mode')
 	sector.setStrobeType('jbmh',false)
 	sector.setStrobeType('mic',false)
+	alert('resetAll - complete')
 end
 
 	-- dump_props(gma.show.getobj.handle("SpecialMaster 3.1"))
