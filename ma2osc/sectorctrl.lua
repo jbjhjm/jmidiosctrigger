@@ -51,11 +51,15 @@ sector = {
 -- NOTE: fadeTime sent via OSC is not premultiplied! range 0-100!
 -- fadeTime - 1 because velocity min value is 1!
 function sector.setFadeInTime(group, fadeTime)
-	fadeTime = fadeTime and (fadeTime-1)*0.05 or 0.5
+	fadeTime = fadeTime 
+	    and (fadeTime-1)*0.05 
+		or ((group == 'micpixel' or group == 'sunpixel' or group == 'gl-colors') and 0 or 0.5)
 	setFadeTime(group, false, fadeTime)
 end
 function sector.setFadeOutTime(group, fadeTime)
-	fadeTime = fadeTime and (fadeTime-1)*0.05 or 0.6
+	fadeTime = fadeTime 
+	    and (fadeTime-1)*0.05 
+		or ((group == 'micpixel' or group == 'sunpixel' or group == 'gl-colors') and 0 or 0.6)
 	setFadeTime(group, true, fadeTime)
 end
 function sector.resetFlashFading(group)
@@ -155,7 +159,20 @@ function sector.resetAll()
 	alert('resetAll - strobe to dim mode')
 	sector.setStrobeType('jbmh',false)
 	sector.setStrobeType('mic',false)
+	alert('resetAll - reset Song Execs')
+	sector.resetSongExec()
 	alert('resetAll - complete')
+end
+
+function sector.resetSongExec()
+	-- cmd does not allow Faders to be set across multiple pages.
+	-- they could be off'd using "Off Page 15 Thru 44 Fader 1 Thru".
+	-- but off'd faders will only be enabled again after hitting 0, it seems.
+	-- so we automate it for each song page.
+	for page=15, 44 do
+		gma.cmd('Fader '..page..'.1 Thru '..page..'.15 At 0')
+	end
+	
 end
 
 	-- dump_props(gma.show.getobj.handle("SpecialMaster 3.1"))
