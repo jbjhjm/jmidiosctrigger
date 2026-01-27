@@ -1,0 +1,55 @@
+# MIDI note/CC name map
+53	Pg-> 44
+52	Pg-> 43
+51	Pg-> 42
+50	Pg-> 41
+49	Pg-> 40
+48	Pg-> 39
+47	Pg-> 38
+46	Pg-> 37
+45	Pg-> 36
+44	Pg-> 35
+43	Pg-> Observation
+42	Pg-> Voices
+41	Pg-> Bastard
+40	Pg-> Prototype
+39	Pg-> In Summary
+38	Pg-> More Or Less
+37	Pg-> DigiVoo
+36	Pg-> 2k95
+35	Pg-> Millenium
+34	Pg-> Exhale
+33	Pg-> CMP
+32	Pg-> Fake
+31	Pg-> Warp
+30	Pg-> Enemy No1
+29	Pg-> Guilty
+28	Pg-> Wrong Way
+27	Pg-> Incompetence
+26	Pg-> Burning 
+25	Pg-> Echoes
+24	Pg-> Upon Request
+23	
+22	
+21	
+20	Exec 10
+19	Exec 9
+18	Exec 8
+17	Exec 7
+16	Exec 6
+15	Exec 5
+14	Exec 4
+13	Exec 3
+12	Exec 2
+11	Exec 1 MAIN
+10	Fader 10
+9	Fader 9
+8	Fader 8
+7	Fader 7
+6	Fader 6
+5	Fader 5
+4	Fader 4
+3	Fader 3
+2	Fader 2
+1	Fader 1
+0	

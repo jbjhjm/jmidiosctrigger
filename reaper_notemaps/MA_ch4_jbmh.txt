@@ -1,0 +1,97 @@
+# MIDI note/CC name map
+
+100 JBMH FadeOut Short 4
+99	JBMH FadeOut Short 3
+98	JBMH FadeOut Short 2
+97	JBMH FadeOut Short 1
+96	
+95	
+94	PT20 Slow
+93	p SymSym fast noDim
+92	P Sym +-90deg
+91	P Sym Pha 180deg
+90	PT 10deg med
+89	P Block sin
+88	P Phased Symm Front
+87	P SymSym fast
+86	P Symm Block
+85	Rotary Light 360
+84	PTDim RND Flickr
+83	PT RND
+82	PT 20deg med
+81	PT 30deg slow
+80	TDim Wave Up
+79	TDim Wave Down
+78	T Wave Sin
+77	T Min
+76	T Max
+75	P Uni Sin
+74	P Symm to center
+73	P Symm to side
+72	P 180 CCW
+71	P 180 CW
+70	Zoom Dimmer PWM 1
+69	Zoom PWM Sym 1
+68	Zoom Sin Uni .5
+67	Zoom Sin .5
+66	Zoom Dimmer Smooth .5
+65	Zoom Wide
+64	Zoom 50
+63	Zoom Narrow
+62	
+61	
+60	P INV2 J+H
+59	P INV2 Nils
+58	P INV2 Drums+Banner
+57	P INV2 Drums
+56	P INV2 Back Horz
+55	
+54	P INV 2 Aud 60deg
+53	P INV J+H
+52	P INV Aud 60deg
+51	P INV J+N+H
+50	
+49	Pos Back Horizontal
+48	Pos Home
+47	Pos Jeremy
+46	Pos Nils
+45	Pos Back 30deg
+44	Pos J+H
+43	Pos Aud Horizontal
+42	Pos J+N+H
+41	Pos Audience 60deg
+
+31	JBMH Strobe4
+30	JBMH Strobe3
+29	JBMH Strobe2
+28	JBMH Strobe1
+27	JBMH FadeOut4
+26	JBMH FadeOut3	
+25	JBMH FadeOut2
+24	JBMH FadeOut1
+23	JBMH Flash4	
+22	JBMH Flash3	
+21	JBMH Flash2	
+20	JBMH Flash1
+19	JBMH FadeIn4	
+18	JBMH FadeIn3	
+17	JBMH FadeIn2	
+16	JBMH FadeIn1
+
+15	JBMH Strobe=White
+14	JBMH Strobe=Dim
+13	JBMH White
+12	JBMH Blackout hard
+11	JBMH Blackout soft
+
+10	-
+9	-
+8	-
+7	-
+6	-
+5	Fadeout Speed
+4	Fade Speed
+3	-
+2	PT Speed Master
+1	Dimmer Submaster
+0	

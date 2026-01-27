@@ -1,0 +1,66 @@
+# MIDI note/CC name map
+#2 Sunstrips Slow Fades
+#1 Rndm Blue
+#0 Fake
+59 Glb Fader 12
+58 Glb Fader 11
+57 Glb Fader 10
+56 Glb Fader 9
+55 Glb Fader 8
+54 Glb Fader 7
+53 Glb Fader 6
+52 Glb Fader 5
+51 Glb Fader 4
+50 Glb Fader 3
+49 Glb Fader 2
+48 Glb Fader 1
+47
+46
+45
+44
+43
+42
+41
+40
+39
+38
+37
+36 Color Flash Berry
+35 Color Flash Gold
+34 Color Flash Yeen Soft
+33 Color Flash Orange-Red
+32 Color Flash CW
+31 Color Flash Violet Soft
+30 Color Flash Violet
+29 Color Flash Aqua
+28 Color Flash Green cold
+27 Color Flash Yeen
+26 Color Flash Orange
+25 Color Flash WW
+24 Color Flash Purple
+23 Color Flash Blue Soft
+22 Color Flash Cyan Soft
+21 Color Flash Green Soft
+20 Color Flash Yellow Soft
+19 Color Flash Orange Soft
+18 Color Flash White
+17 Color Flash Magenta
+16 Color Flash Blue
+15 Color Flash Cyan
+14 Color Flash Green
+13 Color Flash Yellow
+12 Color Flash Red
+
+11 
+10 
+9 Reset All
+8 Blackout temp
+7 Color Flash FadeOut
+6 Color Flash FadeIn
+5 Strobe Speed
+4 FX Speed PanTilt
+3 FX Speed 
+2 Transition
+1 Reset Values
+0 BPM
+

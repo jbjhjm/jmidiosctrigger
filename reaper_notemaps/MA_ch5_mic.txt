@@ -1,0 +1,72 @@
+# MIDI note/CC name map
+79
+78
+77
+76
+75
+74
+73
+72
+71
+70
+69
+68
+67
+66
+65
+64 Mic FdOut Seg4
+63 Mic FdOut Seg3
+62 Mic FdOut Seg2
+61 Mic FdOut Seg1
+60
+59
+58
+57
+56	Mic Pix 16
+55	Mic Pix 15
+54	Mic Pix 14
+53	Mic Pix 13
+52	Mic Pix 12
+51	Mic Pix 11
+50	Mic Pix 10
+49	Mic Pix 9
+48	Mic Pix 8
+47	Mic Pix 7
+46	Mic Pix 6
+45	Mic Pix 5
+44	Mic Pix 4
+43	Mic Pix 3
+42	Mic Pix 2
+41	Mic Pix 1
+31	Mic 
+30	Mic 
+29	Mic 
+28	Mic Strobe1
+27	Mic 
+26	Mic 	
+25	Mic 
+24	Mic FadeOut1
+23	Mic 
+22	Mic 
+21	Mic 
+20	Mic Flash1
+19	Mic 
+18	Mic 
+17	Mic 
+16	Mic FadeIn1
+15	Mic Strobe=White
+14	Mic Strobe=Dim
+13	Mic Force White
+12	Mic Blackout hard
+11	Mic Blackout soft
+10	Transition Speed?
+9	
+8	-
+7	Pixel FadeOut Speed
+6	Pixel FadeIn Speed
+5	FadeOut Speed
+4	FadeIn Speed
+3	-
+2	-
+1	Dimmer Submaster
+0	

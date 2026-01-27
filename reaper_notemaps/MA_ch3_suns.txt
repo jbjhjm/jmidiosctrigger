@@ -1,0 +1,94 @@
+# MIDI note/CC name map
+
+99 
+98 
+97 
+96 
+95 
+94 
+93 
+92 Sun4 SegFdOut 3
+91 Sun4 SegFdOut 2
+90 Sun4 SegFdOut 1
+89 Sun3 SegFdOut 3
+88 Sun3 SegFdOut 2
+87 Sun3 SegFdOut 1
+86 Sun2 SegFdOut 3
+85 Sun2 SegFdOut 2
+84 Sun2 SegFdOut 1
+83 Sun1 SegFdOut 3
+82 Sun1 SegFdOut 2
+81 Sun1 SegFdOut 1
+80 Sun4 Px 10
+79 Sun4 Px 9
+78 Sun4 Px 8
+77 Sun4 Px 7
+76 Sun4 Px 6
+75 Sun4 Px 5
+74 Sun4 Px 4
+73 Sun4 Px 3
+72 Sun4 Px 2
+71 Sun4 Px 1 ---
+70 Sun3 Px 10
+69 Sun3 Px 9
+68 Sun3 Px 8
+67 Sun3 Px 7
+66 Sun3 Px 6
+65 Sun3 Px 5
+64 Sun3 Px 4
+63 Sun3 Px 3
+62 Sun3 Px 2
+61 Sun3 Px 1 ---
+60 Sun2 Px 10
+59 Sun2 Px 9
+58 Sun2 Px 8
+57 Sun2 Px 7
+56 Sun2 Px 6
+55 Sun2 Px 5
+54 Sun2 Px 4
+53 Sun2 Px 3
+52 Sun2 Px 2
+51 Sun2 Px 1 ---
+50 Sun1 Px 10
+49 Sun1 Px 9
+48 Sun1 Px 8
+47 Sun1 Px 7
+46 Sun1 Px 6
+45 Sun1 Px 5
+44 Sun1 Px 4
+43 Sun1 Px 3
+42 Sun1 Px 2
+41 Sun1 Px 1 ---
+
+31	Suns Strobe4
+30	Suns Strobe3
+29	Suns Strobe2
+28	Suns Strobe1
+27	Suns FadeOut4
+26	Suns FadeOut3	
+25	Suns FadeOut2
+24	Suns FadeOut1
+23	Suns Flash4	
+22	Suns Flash3	
+21	Suns Flash2	
+20	Suns Flash1
+19	Suns FadeIn4	
+18	Suns FadeIn3	
+17	Suns FadeIn2	
+16	Suns FadeIn1
+15	Suns -
+14	Suns -
+13	Suns -
+12	Suns Blackout hard
+11	Suns Blackout soft
+10	Transition Speed?
+9	-
+8	-
+7	Pixel FadeOut Speed
+6	Pixel FadeIn Speed
+5	FadeOut Speed
+4	FadeIn Speed
+3	-
+2	
+1	Dimmer Submaster
+0	
