@@ -27,7 +27,7 @@ local Input             = gma.textinput;
 local GetVar            = gma.show.getvar;
 local Progress          = gma.gui.progress;
 local Debug             = 0;                                -- For Debug-Feedback set to 1; No Debug-Feedback any other value
-
+local Delete = false -- if false, a report will be created. if true, unused seqs will immediately be deleted.
 local MaxExec = 220; -- to check ALL, this must be 220
 
 --**********************************************************
@@ -136,7 +136,11 @@ function SeqPoolCleaner(LastSeqNumber, LastPageNumber)
             --Delete now the sequence, if AssignmentCounter = 0
             if (AssignmentCounter == 0) then
                 Feedback("Sequence "..Counter.." ("..SeqName..") is unused.");
-                table.insert(unusedSeqIds, Counter);
+				if Delete then
+                	Command("Delete Sequence "..Counter);
+				else 
+               	 table.insert(unusedSeqIds, Counter);
+				end
             elseif (AssignmentCounter > 0) then
                 Feedback("Sequence "..Counter.." ("..SeqName..") is used "..AssignmentCounter.."x on different executors.");
             end
@@ -144,37 +148,40 @@ function SeqPoolCleaner(LastSeqNumber, LastPageNumber)
     end
 
     Feedback("Unused sequences: "..(#unusedSeqIds));
-	local currIndex = 1; -- LUA is not zero based!!!!!!!!!!!!!
-	local nextIndex = 1;
-	local a, b;
-	local ranges = {}
-	while currIndex < #unusedSeqIds do
-		-- Feedback("Start at offset "..currIndex);
-		nextIndex = currIndex+1;
-		while nextIndex < #unusedSeqIds - 1 do
-			-- Feedback("start sub loop at "..nextIndex);
-			a = unusedSeqIds[nextIndex - 1];
-			-- Feedback("scan next seq, a= "..a);
-			b = unusedSeqIds[nextIndex];
-			-- Feedback("scan next seq, b= "..b);
-			if (a+1 == b) then
-				-- Feedback("Increase subindex cause "..a.." + 1 == "..b);
-				nextIndex = nextIndex + 1;
-			else
-				break
+
+	if not Delete then 
+		local currIndex = 1; -- LUA is not zero based!!!!!!!!!!!!!
+		local nextIndex = 1;
+		local a, b;
+		local ranges = {}
+		while currIndex < #unusedSeqIds do
+			-- Feedback("Start at offset "..currIndex);
+			nextIndex = currIndex+1;
+			while nextIndex < #unusedSeqIds - 1 do
+				-- Feedback("start sub loop at "..nextIndex);
+				a = unusedSeqIds[nextIndex - 1];
+				-- Feedback("scan next seq, a= "..a);
+				b = unusedSeqIds[nextIndex];
+				-- Feedback("scan next seq, b= "..b);
+				if (a+1 == b) then
+					-- Feedback("Increase subindex cause "..a.." + 1 == "..b);
+					nextIndex = nextIndex + 1;
+				else
+					break
+				end
 			end
+			-- Feedback("Report");
+			if nextIndex - 1 > currIndex then
+				table.insert(ranges, ""..unusedSeqIds[currIndex].." thru "..unusedSeqIds[nextIndex-1]);
+			else
+				table.insert(ranges, ""..unusedSeqIds[nextIndex-1]);
+			end
+		
+			currIndex = nextIndex;
 		end
-		-- Feedback("Report");
-		if nextIndex - 1 > currIndex then
-			table.insert(ranges, ""..unusedSeqIds[currIndex].." thru "..unusedSeqIds[nextIndex-1]);
-		else
-			table.insert(ranges, ""..unusedSeqIds[nextIndex-1]);
-		end
-	
-		currIndex = nextIndex;
+		
+		Feedback(table.concat(ranges,' + '));
 	end
-	
-    Feedback(table.concat(ranges,' + '));
 
 end
 
