@@ -1,5 +1,7 @@
 -- --*******************************************************
 -- LUA-Script by Dominik Herderich**************************
+-- Rewritten to report instead of immediately deleting *****
+-- by Jannik Mewes  ****************************************
 -- --*******************************************************
 
 
@@ -26,6 +28,7 @@ local GetVar            = gma.show.getvar;
 local Progress          = gma.gui.progress;
 local Debug             = 0;                                -- For Debug-Feedback set to 1; No Debug-Feedback any other value
 
+local MaxExec = 220; -- to check ALL, this must be 220
 
 --**********************************************************
 -- Get Basics for creating the timecode show and sequence **
@@ -92,35 +95,39 @@ end
 --**********************************************************
 function SeqPoolCleaner(LastSeqNumber, LastPageNumber)
     --iterate through the sequence pool until the last used sequence object is reached and cleanup
+	local unusedSeqIds = {}
+
     for Counter=1, LastSeqNumber, 1 do
         Handle = Grab.handle("Sequence "..Counter);
         if(Handle) then
             SeqName = Grab.label(Handle);
             -- make safe against empty labels
             if(SeqName) then
-                Feedback("Sequence "..Counter.." exists.");
+                Feedback("Sequence "..Counter.." ("..SeqName..") exists.");
             else
                 Feedback("Sequence "..Counter.." is empty.");
             end
+
+			SeqName = SeqName or 'unnamed';
             
             --set AssignmentCounter variable to have an overview how often a sequence is assigned.
             local AssignmentCounter = 0;
             ifdev(AssignmentCounter, "AssignmentCounter: ");
-            Sleep(0.1);
+            Sleep(0.03);
 
             --go through the execs to find an exec, that has the name of the actual sequence
             for Page =0, LastPageNumber ,1 do
-                for Executor = 0, 220, 1 do
+                for Executor = 0, MaxExec, 1 do
                     ExecHandle = Grab.handle("Executor "..Page.."."..Executor);
                     if(ExecHandle) then
                         ExecName = Grab.label(ExecHandle);
-                        ifdev(ExecHandle, "Actual ExecHandle: ");
-                        ifdev(ExecName, "Actual ExecName: ");
+                        -- ifdev(ExecHandle, "Actual ExecHandle: ");
+                        -- ifdev(ExecName, "Actual ExecName: ");
                         --check if ExecName and SeqName are the same. If yes, the Sequence is assigned to an Exec and can't be deleted later. The AssignmentCounter will be increased in this case.
                         if(ExecName == SeqName) then
-                            Feedback("Sequence is assigned at executor "..Page.."."..Executor..".");
+                            -- Feedback("Sequence is assigned at executor "..Page.."."..Executor..".");
                             AssignmentCounter = AssignmentCounter + 1;
-                            ifdev(AssignmentCounter, "AssignmentCounter increased: ");
+                            -- ifdev(AssignmentCounter, "AssignmentCounter increased: ");
                         end
                     end
                 end
@@ -128,13 +135,46 @@ function SeqPoolCleaner(LastSeqNumber, LastPageNumber)
 
             --Delete now the sequence, if AssignmentCounter = 0
             if (AssignmentCounter == 0) then
-                Command("Delete Sequence "..Counter);
-                Feedback("DELETED SEQUENCE "..Counter);
+                Feedback("Sequence "..Counter.." ("..SeqName..") is unused.");
+                table.insert(unusedSeqIds, Counter);
             elseif (AssignmentCounter > 0) then
-                Feedback("Sequence "..Counter.." is used "..AssignmentCounter.."x on different executors.");
+                Feedback("Sequence "..Counter.." ("..SeqName..") is used "..AssignmentCounter.."x on different executors.");
             end
         end
     end
+
+    Feedback("Unused sequences: "..(#unusedSeqIds));
+	local currIndex = 1; -- LUA is not zero based!!!!!!!!!!!!!
+	local nextIndex = 1;
+	local a, b;
+	local ranges = {}
+	while currIndex < #unusedSeqIds do
+		-- Feedback("Start at offset "..currIndex);
+		nextIndex = currIndex+1;
+		while nextIndex < #unusedSeqIds - 1 do
+			-- Feedback("start sub loop at "..nextIndex);
+			a = unusedSeqIds[nextIndex - 1];
+			-- Feedback("scan next seq, a= "..a);
+			b = unusedSeqIds[nextIndex];
+			-- Feedback("scan next seq, b= "..b);
+			if (a+1 == b) then
+				-- Feedback("Increase subindex cause "..a.." + 1 == "..b);
+				nextIndex = nextIndex + 1;
+			else
+				break
+			end
+		end
+		-- Feedback("Report");
+		if nextIndex - 1 > currIndex then
+			table.insert(ranges, ""..unusedSeqIds[currIndex].." thru "..unusedSeqIds[nextIndex-1]);
+		else
+			table.insert(ranges, ""..unusedSeqIds[nextIndex-1]);
+		end
+	
+		currIndex = nextIndex;
+	end
+	
+    Feedback(table.concat(ranges,' + '));
 
 end
 
