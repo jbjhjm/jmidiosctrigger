@@ -7,8 +7,8 @@ local function alert(message)
 	gma.echo(messagePrefix..message)
 end
 
-local fadeGroups={ 'jbmh', 'mic', 'suns', 'micpixel', 'sunpixel', 'gl-colors' }
-local strobeGroups={ 'jbmh', 'mic', 'suns' }
+local fadeGroups={ 'jbmh', 'bee', 'mic', 'suns', 'micpixel', 'sunpixel', 'gl-colors' }
+local strobeGroups={ 'jbmh', 'bee', 'mic', 'suns' }
 
 local function setFadeTime(group, isOut, fadeTimeSec)
 	-- local fadeTimeNum = tonumber(fadeTime)
@@ -20,6 +20,8 @@ local function setFadeTime(group, isOut, fadeTimeSec)
 	local execRange = ""
 	if group == "jbmh" then
 		execRange = isOut and "4.114 thru 4.117" or "4.106 thru 4.109"
+	elseif group == "bee" then
+		execRange = isOut and "7.114 thru 7.117" or "7.106 thru 7.109"
 	elseif group == "mic" then
 		execRange = isOut and "5.114 thru 5.117" or "5.106 thru 5.109"
 	elseif group == "suns" then
@@ -109,6 +111,7 @@ function sector.setStrobeSpeed(multiplier)
 	-- Sunstrips have no Strobe channel
 	-- Mic has no Strobe channel
 	-- JBMH have very limited Strobe channel
+	-- Bees have strobe channel TODO: find out what's better
 	local refSpeedBPM = sector.readSpeedMasterBPM(sector.bpmMaster)
 	local strobeSpeedBPM = refSpeedBPM * multiplierPerBeat
 	alert("strobeSpeed in bpm = "..strobeSpeedBPM)
@@ -140,6 +143,12 @@ function sector.setStrobeType(group, setWhite)
 		gma.cmd("Assign Sequence "..(startSeq+1).." At Executor 4.119")
 		gma.cmd("Assign Sequence "..(startSeq+2).." At Executor 4.120")
 		gma.cmd("Assign Sequence "..(startSeq+3).." At Executor 4.121")
+	elseif group == "bee" then
+		local startSeq = setWhite and 614 or 610
+		gma.cmd("Assign Sequence "..(startSeq+0).." At Executor 7.118")
+		gma.cmd("Assign Sequence "..(startSeq+1).." At Executor 7.119")
+		gma.cmd("Assign Sequence "..(startSeq+2).." At Executor 7.120")
+		gma.cmd("Assign Sequence "..(startSeq+3).." At Executor 7.121")
 	elseif group == "mic" then
 		local startSeq = setWhite and 609 or 608
 		gma.cmd("Assign Sequence "..(startSeq+0).." At Executor 5.118")
@@ -158,6 +167,7 @@ function sector.resetAll()
 	sector.resetFlashFading()
 	alert('resetAll - strobe to dim mode')
 	sector.setStrobeType('jbmh',false)
+	sector.setStrobeType('bee',false)
 	sector.setStrobeType('mic',false)
 	alert('resetAll - reset Song Execs')
 	sector.resetSongExec()
