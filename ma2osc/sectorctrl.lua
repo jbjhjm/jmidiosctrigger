@@ -101,28 +101,28 @@ function sector.setStrobeSpeed(multiplier)
 		alert("missing speed param value")
 		return
 	end
-	local speedNum = tonumber(multiplier)
-	if speedNum == nil then
+	local multiplierPerBeat = tonumber(multiplier) / 4
+	if multiplierPerBeat == nil then
 		alert("invalid speed param value")
 		return
 	end
 	-- Sunstrips have no Strobe channel
 	-- Mic has no Strobe channel
 	-- JBMH have very limited Strobe channel
-	local refSpeed = sector.readSpeedMasterBPM(sector.bpmMaster)
-	local strobeSpeed = refSpeed * multiplier
-	alert("strobeSpeed in bpm = "..strobeSpeed)
+	local refSpeedBPM = sector.readSpeedMasterBPM(sector.bpmMaster)
+	local strobeSpeedBPM = refSpeedBPM * multiplierPerBeat
+	alert("strobeSpeed in bpm = "..strobeSpeedBPM)
 
-	gma.cmd(sector.strobeMaster.." At "..(strobeSpeed/4))
+	gma.cmd(sector.strobeMaster.." At "..(strobeSpeedBPM))
 
-	local strobeIntervalMs = 1000 / (strobeSpeed / 60)
-	local pulseWidth = sector.strobeWidthMs / strobeIntervalMs * 100.0
+	local strobeIntervalMs = 1000 / (strobeSpeedBPM / 60)
+	local pulseWidthPercent = sector.strobeWidthMs / strobeIntervalMs * 100.0
 	alert("strobeInterval in ms = "..strobeIntervalMs)
-	alert("pulseWidth for 100ms light in % = "..pulseWidth)
+	alert("pulseWidth in % according to strobeWidthMs= "..pulseWidthPercent)
 
 	-- template effects will not be stored as reference in cue
 	-- only when using selective effects, updating the effect will change the result.
-	gma.cmd("Assign "..sector.strobeEffect.." /width="..pulseWidth)
+	gma.cmd("Assign "..sector.strobeEffect.." /width="..pulseWidthPercent)
 
 end
 
