@@ -7,8 +7,8 @@ local function alert(message)
 	gma.echo(messagePrefix..message)
 end
 
-local fadeGroups={ 'jbmh', 'bee', 'mic', 'suns', 'micpixel', 'sunpixel', 'gl-colors' }
-local strobeGroups={ 'jbmh', 'bee', 'mic', 'suns' }
+local fadeGroups={ 'jbmh', 'bee', 'mic', 'suns', 'srstrips', 'micpixel', 'sunpixel', 'gl-colors' }
+local strobeGroups={ 'jbmh', 'bee', 'mic', 'suns', 'srstrips' }
 
 local function setFadeTime(group, isOut, fadeTimeSec)
 	-- local fadeTimeNum = tonumber(fadeTime)
@@ -177,6 +177,12 @@ function sector.setStrobeType(group, setWhite)
 		gma.cmd("Assign Sequence "..(startSeq+1).." At Executor 7.119")
 		gma.cmd("Assign Sequence "..(startSeq+2).." At Executor 7.120")
 		gma.cmd("Assign Sequence "..(startSeq+3).." At Executor 7.121")
+	elseif group == "srstrips" then
+		local startSeq = setWhite and 622 or 618
+		gma.cmd("Assign Sequence "..(startSeq+0).." At Executor 8.118")
+		gma.cmd("Assign Sequence "..(startSeq+1).." At Executor 8.119")
+		gma.cmd("Assign Sequence "..(startSeq+2).." At Executor 8.120")
+		gma.cmd("Assign Sequence "..(startSeq+3).." At Executor 8.121")
 	elseif group == "mic" then
 		local startSeq = setWhite and 609 or 608
 		gma.cmd("Assign Sequence "..(startSeq+0).." At Executor 5.118")
@@ -199,6 +205,7 @@ function sector.resetAll()
 	sector.setStrobeType('jbmh',false)
 	sector.setStrobeType('bee',false)
 	sector.setStrobeType('mic',false)
+	sector.setStrobeType('srstrips',false)
 	alert('resetAll - reset Song Execs')
 	sector.resetSongExec()
 	alert('resetAll - complete')
