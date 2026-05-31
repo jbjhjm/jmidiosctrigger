@@ -96,6 +96,34 @@ function sector.readSpeedMasterBPM(speedmasterhandle)
 	return speedmasterbpm
 end
 
+-- NOTE: velo sent via OSC is not premultiplied! range 0-100!
+function sector.setVelocity(group, velo)
+	if group == "jbmh" then
+		if velo > 99 then
+			gma.cmd("Go 1.139")
+		elseif velo <= 0 then
+			gma.cmd("Go 1.131")
+		elseif velo <= 5 then
+			gma.cmd("Go 1.132")
+		elseif velo <= 10 then
+			gma.cmd("Go 1.133")
+		elseif velo <= 20 then
+			gma.cmd("Go 1.134")
+		elseif velo <= 30 then
+			gma.cmd("Go 1.135")
+		elseif velo <= 40 then
+			gma.cmd("Go 1.136")
+		elseif velo <= 60 then
+			gma.cmd("Go 1.137")
+		elseif velo <= 80 then
+			gma.cmd("Go 1.138")
+		else
+			gma.cmd("Go 1.139")
+		end
+
+	end
+end
+
 function sector.setStrobeSpeed(multiplier)
 	-- bpm * rate multiplication works only for effects directly assigned to an executor (no cue).
 	-- so only selective effects will work. Set the effect speed group to rate and the speed master in executor options to bpm.
@@ -165,6 +193,8 @@ function sector.resetAll()
 	sector.setStrobeSpeed(4.0)
 	alert('resetAll - flash fade times')
 	sector.resetFlashFading()
+	alert('resetAll - speed')
+	sector.setVelocity('jbmh', 100)
 	alert('resetAll - strobe to dim mode')
 	sector.setStrobeType('jbmh',false)
 	sector.setStrobeType('bee',false)
