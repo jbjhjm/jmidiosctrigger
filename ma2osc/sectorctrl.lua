@@ -13,8 +13,8 @@ local strobeGroups={ 'jbmh', 'bee', 'mic', 'suns', 'srstrips' }
 local function setFadeTime(group, isOut, fadeTimeSec)
 	-- local fadeTimeNum = tonumber(fadeTime)
 	-- if fadeTimeNum == nil then
-	-- 	alert("invalid fadeTime param value")
-	-- 	return
+	--	 alert("invalid fadeTime param value")
+	--	 return
 	-- end
 
 	local execRange = ""
@@ -54,13 +54,15 @@ sector = {
 -- fadeTime - 1 because velocity min value is 1!
 function sector.setFadeInTime(group, fadeTime)
 	fadeTime = fadeTime 
-	    and (fadeTime-1)*0.05 
+		and (fadeTime-1)*0.05 
+		-- defaults differ for some groups
 		or ((group == 'micpixel' or group == 'sunpixel' or group == 'gl-colors') and 0 or 0.5)
 	setFadeTime(group, false, fadeTime)
 end
 function sector.setFadeOutTime(group, fadeTime)
 	fadeTime = fadeTime 
-	    and (fadeTime-1)*0.05 
+		and (fadeTime-1)*0.05 
+		-- defaults differ for some groups
 		or ((group == 'micpixel' or group == 'sunpixel' or group == 'gl-colors') and 0 or 0.6)
 	setFadeTime(group, true, fadeTime)
 end
@@ -77,14 +79,14 @@ function sector.resetFlashFading(group)
 end
 
 function sector.calcBpm2Hz()
-    local bpm = tonumber(gma.textinput("Enter BPM", ""))
-    local notefrac = tonumber(gma.textinput("Enter Note fraction, e.g. 16", ""))
-    local hz = bpm / 60 * (notefrac/4)
-    if hz then
-        gma.gui.msgbox('Calculated Frequency', hz..'Hz')
-    else
-        gma.gui.msgbox('Calculated Frequency', 'failed to calculate')
-    end
+	local bpm = tonumber(gma.textinput("Enter BPM", ""))
+	local notefrac = tonumber(gma.textinput("Enter Note fraction, e.g. 16", ""))
+	local hz = bpm / 60 * (notefrac/4)
+	if hz then
+		gma.gui.msgbox('Calculated Frequency', hz..'Hz')
+	else
+		gma.gui.msgbox('Calculated Frequency', 'failed to calculate')
+	end
 end
 	
 function sector.readSpeedMasterBPM(speedmasterhandle)
@@ -142,9 +144,12 @@ function sector.setStrobeSpeed(multiplier)
 	-- Bees have strobe channel TODO: find out what's better
 	local refSpeedBPM = sector.readSpeedMasterBPM(sector.bpmMaster)
 	local strobeSpeedBPM = refSpeedBPM * multiplierPerBeat
+	-- an additional divide by for is required.
+	-- this is because the speed sliders are limited in range!
 	alert("strobeSpeed in bpm = "..strobeSpeedBPM)
-
-	gma.cmd(sector.strobeMaster.." At "..(strobeSpeedBPM))
+	
+	-- the effects are set to rate 4
+	gma.cmd(sector.strobeMaster.." At "..(strobeSpeedBPM / 4))
 
 	local strobeIntervalMs = 1000 / (strobeSpeedBPM / 60)
 	local pulseWidthPercent = sector.strobeWidthMs / strobeIntervalMs * 100.0
@@ -160,8 +165,8 @@ end
 function sector.setStrobeType(group, setWhite)
 	-- local fadeTimeNum = tonumber(fadeTime)
 	-- if fadeTimeNum == nil then
-	-- 	alert("invalid fadeTime param value")
-	-- 	return
+	--	 alert("invalid fadeTime param value")
+	--	 return
 	-- end
 
 	local execRange = ""
