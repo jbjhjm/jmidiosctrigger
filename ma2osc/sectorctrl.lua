@@ -46,7 +46,7 @@ end
 sector = {
 	bpmMaster = 'SpecialMaster 3.1',
 	strobeMaster = 'SpecialMaster 3.3',
-	strobeEffect = 'Effect 360 thru 361',
+	strobeEffect = 'Effect 361 thru 366', -- only required to update pulse widths of the effects
 	strobeWidthMs = 30,
 }
 
