@@ -1,0 +1,94 @@
+# MIDI note/CC name map
+101	FX Clr Movement9
+100	FX Clr Movement8
+99	FX Clr Movement7
+98	FX Clr Movement6
+97	FX Clr Movement5
+94	FX Clr Movement4
+93	FX Clr Movement3
+92	FX Clr Movement10
+91	FX Clr Movement1
+90	FX Clr CometDown1
+89	FX Noise 9 Strobe
+88	FX Noise 3
+87	FX Noise 2 RndmMovemnt
+86	FX Noise 1 Blips
+85	FX Noise 17 Clr
+84	FX Noise 15
+83	FX Noise 14
+82	FX Noise 12 Fast
+81	FX Noise 11 Glimmer
+80	FX Amb Smooth4
+79	FX Amb Smooth2
+78	FX Amb Movement9
+77	FX Amb Movement8
+76	FX Amb Movement7
+75	FX Amb Movement6
+74	FX Amb Movement5
+73	FX Amb DiagDropsDown
+72	FX Amb Movement2
+71	FX Amb BarUniUpDown
+70	FX Amb BarUniDownUni
+69	FX Amb MatrixUp2
+68	FX Amb MatrixUp
+67	FX Amb MatrixDown2
+66	FX Amb MatrixDown1
+65	FX Shot Slow FlowUp2
+64	FX Shot Slow FlowUp1
+63	FX Shot Slow FlowDown2
+62	FX Shot Slow FlowDown1
+61	FX Shot Slow DropsUniExpnd
+60	FX Shot Slow DropsUniDown
+59	FX Shot Slow DropsUniComp
+58	FX Shot Slow BarUniUpSingle
+57	FX Shot Slow BarUniExpnd
+56	FX Shot Horiz MoveSmooth
+55	FX Shot Horiz ExpandSmooth
+54	FX Shot Fast WaveUp
+53	FX Shot Fast WaveLongDown
+52	FX Shot Fast FullBarUp
+51	FX Shot Fast FullBarDown
+50	FX Shot Fast ExpndWaves
+49	FX Shot Fast ExpndDoubleWaves
+48	FX Shot Fast DropUp
+47	FX Shot Fast DropDown
+46	FX Shot Fast DoubleDownWave
+45	FX Shot Fast ComprWaves
+44	FX Shot Fast ComprFullBars
+43	FX Shot Fast ComprExpndBars
+42	FX Shot Fast ComprDoubleWaves
+41	FX Shot Fast BarDown
+41	FX Shot Fast BarUpDown
+40	
+39	
+38	
+37	
+36	
+35	FX Mode = Oneshot+Black
+34	FX Mode = Loop+Black
+33	FX Mode = Loop
+32	
+31	Strobe SRStrip4
+30	Strobe SRStrip3
+29	Strobe SRStrip2
+28	Strobe SRStrip1
+27	FadeOut SRStrip4
+26	FadeOut SRStrip3
+25	FadeOut SRStrip2
+24	FadeOut SRStrip1
+23	Flash SRStrip4
+22	Flash SRStrip3
+21	Flash SRStrip2
+20	Flash SRStrip1
+19	FadeIn SRStrip4
+18	FadeIn SRStrip3
+17	FadeIn SRStrip2
+16	FadeIn SRStrip1
+15	Strobe White
+14	Strobe Dim
+13	White Flashes
+12	Blackout hard
+11	Blackout soft
+5	Fadeout Speed
+4	Fadein Speed
+1	SR Strips Brightness

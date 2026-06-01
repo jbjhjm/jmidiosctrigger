@@ -91,7 +91,7 @@
 6	-
 5	Fadeout Speed
 4	Fade Speed
-3	-
-2	PT Speed Master
+3	Positioning Speed
+2	-
 1	Dimmer Submaster
 0	

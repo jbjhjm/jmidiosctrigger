@@ -98,6 +98,34 @@ function sector.readSpeedMasterBPM(speedmasterhandle)
 	return speedmasterbpm
 end
 
+-- NOTE: this controls fade time for position executors.
+-- FX with PT speed support can be configurated using the global PT Speed Master.
+-- NOTE: velo sent via OSC is not premultiplied! range 0-100!
+-- input value scaled to range of 0-10s.
+function sector.setPositioningTime(group, input)
+	local velo = input / 10
+	if group == "jbmh" then
+		gma.cmd("Assign Exec 4.131 thru 4.150 Cue 1 /fade="..velo)
+	elseif group == "bees" then
+		gma.cmd("Assign Exec 7.122 thru 7.145 Cue 1 /fade="..velo)
+	end
+end
+
+-- NOTE: right now only used by resetAll(). OSC API uses OSC Fader API directly.
+function sector.setDimSubmaster(group, input)
+	if group == "suns" then
+		gma.cmd("Fader 3.1 At "..input)
+	elseif group == "jbmh" then
+		gma.cmd("Fader 4.1 At "..input)
+	elseif group == "mic" then
+		gma.cmd("Fader 5.1 At "..input)
+	elseif group == "bees" then
+		gma.cmd("Fader 7.1 At "..input)
+	elseif group == "srstrips" then
+		gma.cmd("Fader 8.1 At "..input)
+	end
+end
+
 -- NOTE: velo sent via OSC is not premultiplied! range 0-100!
 function sector.setVelocity(group, velo)
 	if group == "jbmh" then
@@ -204,8 +232,16 @@ function sector.resetAll()
 	sector.setStrobeSpeed(4.0)
 	alert('resetAll - flash fade times')
 	sector.resetFlashFading()
+	alert('resetAll - dim submasters')
+	sector.setDimSubmaster('suns', 50)
+	sector.setDimSubmaster('jbmh', 100)
+	sector.setDimSubmaster('mic', 100)
+	sector.setDimSubmaster('bees', 50)
+	sector.setDimSubmaster('srstrips', 100)
 	alert('resetAll - speed')
 	sector.setVelocity('jbmh', 100)
+	sector.setPositioningTime('jbmh', 0)
+	sector.setPositioningTime('bees', 1)
 	alert('resetAll - strobe to dim mode')
 	sector.setStrobeType('jbmh',false)
 	sector.setStrobeType('bee',false)
